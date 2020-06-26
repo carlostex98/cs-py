@@ -2,7 +2,7 @@ const express = require('express');
 const route = express.Router();
 
 route.get('/', function (req, res) {
-    res.send('el coso funciona');
+    res.render('index.ejs');
 });
 
 module.exports = route;
