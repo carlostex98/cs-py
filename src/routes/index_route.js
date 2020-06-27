@@ -5,4 +5,9 @@ route.get('/', function (req, res) {
     res.render('index.ejs');
 });
 
+route.post('/', function (req, res) {
+    res.render('index.ejs');
+});
+
+
 module.exports = route;
