@@ -2,6 +2,7 @@
 	//nuestras estructuras
     let errores =[];
     let nombres=[];
+    let comm=[];
     
     function in_err(tipo, lin, col, decrip){
         var c={id:errores.length, tipo:tipo, linea:lin, columna:col, descripcion:decrip};
@@ -14,6 +15,7 @@
     function clear_vars(){
         errores=[];
         nombres=[];
+        comm=[];
     }
 %}
 
