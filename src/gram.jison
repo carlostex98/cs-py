@@ -3,6 +3,7 @@
     let errores =[];
     let nombres=[];
     let comm=[];
+    let ht = [];
     
     function in_err(tipo, lin, col, decrip){
         var c={id:errores.length, tipo:tipo, linea:lin, columna:col, descripcion:decrip};
@@ -12,6 +13,15 @@
         var c = {tipo:tipo, nombre:nombre};
         nombres.push(c);
     }
+    funcion in_comment(texto, ln, cl){
+        var c = [texto, ln, cl];
+        comm.push(c);
+    }
+
+    function in_html(texto){
+        ht.push(texto);
+    }
+
     function clear_vars(){
         errores=[];
         nombres=[];
@@ -26,9 +36,9 @@
 
 %%
 \s+                      {}                       
-"//".*	                  {}                      
-[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]	       {}
-"String"                {return 'STRING';}
+"//".*	                  {in_comment(yytext, yylloc.first_line, yylloc.first_column);}                      
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]	       { in_comment(yytext, yylloc.first_line, yylloc.first_column); }
+"string"                {return 'STRING';}
 "char"                  {return 'CHAR';}
 "int"                    {return 'INT';}
 "double"                {return 'DOUBLE';}
@@ -79,6 +89,7 @@
 "||"                    {return 'OR';}
 "^"                     {return 'POW';}
 \"[^\"]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA'; }
+\'[^\'']*\'				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA'; }
 [0-9]+"."[0-9]+  	{return 'DECIMAL';}
 [0-9]+				{return 'ENTERO';}
 ([a-zA-Z])[a-zA-Z0-9_]*	{return 'IDENTIFICADOR';}
