@@ -26,6 +26,7 @@
         errores=[];
         nombres=[];
         comm=[];
+        ht = [];
     }
 %}
 
@@ -89,7 +90,7 @@
 "||"                    {return 'OR';}
 "^"                     {return 'POW';}
 \"[^\"]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA'; }
-\'[^\'']*\'				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA'; }
+\'[^\'']*\'				{ yytext = yytext.substr(1,yyleng-2); in_html(yytext); return 'CADENA'; }
 [0-9]+"."[0-9]+  	{return 'DECIMAL';}
 [0-9]+				{return 'ENTERO';}
 ([a-zA-Z])[a-zA-Z0-9_]*	{return 'IDENTIFICADOR';}

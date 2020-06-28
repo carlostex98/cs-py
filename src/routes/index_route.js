@@ -6,7 +6,11 @@ route.get('/', function (req, res) {
 });
 
 route.post('/', function (req, res) {
-    res.render('index.ejs');
+    res.redirect('/cmp');
+});
+
+route.get('/cmp', function (req, res) {
+    res.render('compiled.ejs');
 });
 
 
