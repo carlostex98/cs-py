@@ -1,5 +1,8 @@
 const express = require('express');
 const route = express.Router();
+//var jison = require('jison');
+
+var parser = require('../gram');
 
 route.get('/', function (req, res) {
     res.render('index.ejs');

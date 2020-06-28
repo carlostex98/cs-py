@@ -13,7 +13,7 @@
         var c = {tipo:tipo, nombre:nombre};
         nombres.push(c);
     }
-    funcion in_comment(texto, ln, cl){
+    function in_comment(texto, ln, cl){
         var c = [texto, ln, cl];
         comm.push(c);
     }
@@ -99,9 +99,9 @@
 
 /lex
 %{
-	const TIPO_OPERACION	= require('./instr').TIPO_OPERACION;
-	const TIPO_VAL		= require('./instr').TIPO_VAL;
-	const instruccionesAPI	= require('./instr').instruccionesAPI;
+	const TIPO_OPERACION	= require('../src/gram_instr/instr').TIPO_OPERACION;
+	const TIPO_VAL		= require('../src/gram_instr/instr').TIPO_VAL;
+	const instruccionesAPI	= require('../src/gram_instr/instr').instruccionesAPI;
     module.exports.clear_vars=clear_vars;
 %}
 
