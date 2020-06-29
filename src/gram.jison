@@ -113,13 +113,6 @@ ini
 ;
 
 
-
-instr_main
-	: IMPORT asignacion PUNTO_C 	{ $$ = instruccionesAPI.nuevoImport($2); } 
-    | CLASS IDENTIFICADOR LLAVE_A instr_methods LLAVE_C 	{ $$ = instruccionesAPI.nuevoClass($2,$4); in_var("Class", $2);} 	
-	| error LLAVE_C{  in_err("Sintactico",this._$.first_line,this._$.first_column,yytext); }
-;
-
 instr_methods
     :instr_methods instr_meth   {$1.push($2); $$ = $1; }
     |instr_meth                 {$$ = [$1];}

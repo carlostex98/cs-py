@@ -55,77 +55,31 @@ const TIPO_INSTRUCCIONX = {
 	DEFAULT: 'DEFAULT'
 };
 
-//estaba diseñado para devolver un json, pero lo arregle para que 
-// devuelva un arbol en html
+
+
+function indent(texto){
+	var res = texto.split("\n");
+	texto="";
+	for (let i = 0; i < res.length; i++) {
+		texto+="\t"+res[i]+"\n";
+	}
+	return texto;
+}
+
 const instruccionesPY = {
 	
 	
 
 	nuevoVal: function (tipo, nombre, valor) {
-		var p="<li><span class='caret'>Variable</span>";
-		p+="<ul class='nested'>";
-		p+="<li>Tipo:"+tipo+"</li>";
-		p+="<li>Nombre:"+nombre+"</li>";
-
-		p+="<li><span class='caret'>Valor</span>";
-		p+="<ul class='nested'>";
-		p+=valor;
-		p+="</ul>";
-		p+="</li>";
-
-		
-		p+="</ul>";
-		p+="</li>";
-
-		return p;
+		return nombre +" = "+ valor +"\n";
 	},
 
 	nuevoPrint: function (tipo, valores) {
-		var n = "";
-		if (tipo == "print") {
-			n = TIPO_INSTRUCCION.PRINT;
-		} else {
-			n = TIPO_INSTRUCCION.PRINTLN;
-		}
-		var p="<li><span class='caret'>PRINT</span>";
-		p+="<ul class='nested'>";
-		
-
-		p+="<li><span class='caret'>Valor</span>";
-		p+="<ul class='nested'>";
-		p+=valores;
-		p+="</ul>";
-		p+="</li>";
-
-		
-		p+="</ul>";
-		p+="</li>";
-
-		return p;
+		return "Print ( "+valores+" )\n"
 	},
 
 	nuevoWhile: function (exprLogica, instrucciones) {
-		var p="<li><span class='caret'> WHILE </span>";
-		p+="<ul class='nested'>";
-		
-
-		p+="<li><span class='caret'>Valor-logico</span>";
-		p+="<ul class='nested'>";
-		p+=exprLogica;
-		p+="</ul>";
-		p+="</li>";
-
-		p+="<li><span class='caret'>Instrucciones</span>";
-		p+="<ul class='nested'>";
-		p+=instrucciones;
-		p+="</ul>";
-		p+="</li>";
-		
-		p+="</ul>";
-		p+="</li>";
-
-		return p;
-
+		return "while("+exprLogica+") \n"+ indent(instrucciones)+"\n";
 	},
 	nuevoDoWhile: function (exprLogica, instrucciones) {
 		var p="<li><span class='caret'> DO-WHILE </span>";
