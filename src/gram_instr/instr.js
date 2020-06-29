@@ -109,7 +109,7 @@ const instruccionesAPI = {
 	},
 
 	nuevoPrint: function (tipo, valores) {
-		n = "";
+		var n = "";
 		if (tipo == "print") {
 			n = TIPO_INSTRUCCION.PRINT;
 		} else {

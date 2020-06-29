@@ -57,11 +57,9 @@
 "for"                   {return 'FOR';}
 "void"                  {return 'VOID';}
 "return"                {return 'RETURN';}
-"System"                {return 'SYSTEM';}
-"out"                   {return 'OUT';}
-"println"               {return 'PRINTLN';}
+"Console"                {return 'CONSOLE';}
+"Write"                   {return 'WRITE';}
 "main"                  {return 'MAIN';}
-"print"                 {return 'PRINT';}
 "continue"              {return 'CONTINUE';}
 "+"                     {return 'MAS';}
 "-"                     {return 'MENOS';}
@@ -145,7 +143,7 @@ instr
     | ELSE LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoElse($3);}
     | WHILE PAR_A asignacion PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoWhile($3,$6);}
     | DO LLAVE_A instr_general LLAVE_C WHILE PAR_A asignacion PAR_C PUNTO_C {$$=instruccionesAPI.nuevoDoWhile($7,$3);}
-    | SYSTEM PUNTO OUT PUNTO otro_print PAR_A asignacion PAR_C PUNTO_C  {$$=instruccionesAPI.nuevoPrint($5,$7);}
+    | CONSOLE PUNTO WRITE PAR_A asignacion PAR_C PUNTO_C  {$$=instruccionesAPI.nuevoPrint("ln",$5);}
     | FOR PAR_A var_for PUNTO_C asignacion PUNTO_C asignacion_icr PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoFor($3,$5,$7,$10);}
     | typo_var lista_v IGUAL asignacion PUNTO_C {$$=instruccionesAPI.nuevoVal($1,$2,$4); }
     | typo_var lista_v PUNTO_C {$$=instruccionesAPI.nuevoVal($1,$2,"");  }

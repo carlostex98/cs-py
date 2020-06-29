@@ -1,68 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-      crossorigin="anonymous"
-    />
-    <title>Hello, world!</title>
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Compiladores</a>
-    </nav>
 
-    <div class="container">
-      <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-          <a class="nav-link active" id="tokens-tab" data-toggle="tab" href="#tok" role="tab" aria-controls="home" aria-selected="true">Tokens</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" id="err-tab" data-toggle="tab" href="#err" role="tab" aria-controls="profile" aria-selected="false">Errores</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" id="var-tab" data-toggle="tab" href="#var" role="tab" aria-controls="contact" aria-selected="false">Variables</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" id="ast-tab" data-toggle="tab" href="#ast" role="tab" aria-controls="contact" aria-selected="false">AST</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" id="py-tab" data-toggle="tab" href="#py" role="tab" aria-controls="contact" aria-selected="false">Python</a>
-        </li>
-      </ul>
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="tok" role="tabpanel" aria-labelledby="tok-tab">1</div>
-        <div class="tab-pane fade" id="err" role="tabpanel" aria-labelledby="err-tab">2</div>
-        <div class="tab-pane fade" id="var" role="tabpanel" aria-labelledby="var-tab">3</div>
-        <div class="tab-pane fade" id="ast" role="tabpanel" aria-labelledby="ast-tab">4</div>
-        <div class="tab-pane fade" id="py" role="tabpanel" aria-labelledby="py-tab">5</div>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  <title>Hello, world!</title>
+  <style>
+    /* Remove default bullets */
+    ul,
+    #myUL {
+      list-style-type: none;
+    }
+
+    /* Remove margins and padding from the parent ul */
+    #myUL {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Style the caret/arrow */
+    .caret {
+      cursor: pointer;
+      user-select: none;
+      /* Prevent text selection */
+    }
+
+    /* Create the caret/arrow with a unicode, and style it */
+    .caret::before {
+      content: "\25B6";
+      color: black;
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+    .caret-down::before {
+      transform: rotate(90deg);
+    }
+
+    /* Hide the nested list */
+    .nested {
+      display: none;
+    }
+
+    /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+    .active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Compiladores</a>
+  </nav>
+
+  <div class="container">
+    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="tokens-tab" data-toggle="tab" href="#tok" role="tab" aria-controls="home"
+          aria-selected="true">Tokens</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="err-tab" data-toggle="tab" href="#err" role="tab" aria-controls="profile"
+          aria-selected="false">Errores</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="var-tab" data-toggle="tab" href="#var" role="tab" aria-controls="contact"
+          aria-selected="false">Variables</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="ast-tab" data-toggle="tab" href="#ast" role="tab" aria-controls="contact"
+          aria-selected="false">AST</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="py-tab" data-toggle="tab" href="#py" role="tab" aria-controls="contact"
+          aria-selected="false">Python</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="tok" role="tabpanel" aria-labelledby="tok-tab">1</div>
+      <div class="tab-pane fade" id="err" role="tabpanel" aria-labelledby="err-tab">2</div>
+      <div class="tab-pane fade" id="var" role="tabpanel" aria-labelledby="var-tab">3</div>
+      <div class="tab-pane fade" id="ast" role="tabpanel" aria-labelledby="ast-tab">
+        <%- ast%>
       </div>
+      <div class="tab-pane fade" id="py" role="tabpanel" aria-labelledby="py-tab">5</div>
     </div>
+  </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+
+  <script>
+    var toggler = document.getElementsByClassName("caret");
+    var i;
+
+    for (i = 0; i < toggler.length; i++) {
+      toggler[i].addEventListener("click", function () {
+        this.parentElement.querySelector(".nested").classList.toggle("active");
+        this.classList.toggle("caret-down");
+      });
+    } 
+  </script>
+
+</body>
+
 </html>
