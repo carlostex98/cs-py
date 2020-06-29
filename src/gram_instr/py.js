@@ -79,181 +79,45 @@ const instruccionesPY = {
 	},
 
 	nuevoWhile: function (exprLogica, instrucciones) {
-		return "while("+exprLogica+") \n"+ indent(instrucciones)+"\n";
+		return "while("+exprLogica+"): \n\t"+ instrucciones+"\n";
 	},
 	nuevoDoWhile: function (exprLogica, instrucciones) {
-		var p="<li><span class='caret'> DO-WHILE </span>";
-		p+="<ul class='nested'>";
-		
-
-		p+="<li><span class='caret'>Valor-logico</span>";
-		p+="<ul class='nested'>";
-		p+=exprLogica;
-		p+="</ul>";
-		p+="</li>";
-
-		p+="<li><span class='caret'>Instrucciones</span>";
-		p+="<ul class='nested'>";
-		p+=instrucciones;
-		p+="</ul>";
-		p+="</li>";
-		
-		p+="</ul>";
-		p+="</li>";
-
-		return p;
+		return "while True: \n\t"+
+				instrucciones+
+				"\tif ("+exprLogica+");\n"+
+				"\tbreak;";
 	},
 
 	nuevoFor: function (var_arr, expresionLogica, aumento, instrucciones) {
 
-		var a = var_arr[0];
-		var b = var_arr[1];
-
-		var p="<li><span class='caret'> FOR </span>";
-		p+="<ul class='nested'>";
-
-		p+="<li>Variable: "+a+"</li>"
-
-		p+="<li><span class='caret'>Valor-variable</span>";
-		p+="<ul class='nested'>";
-		p+=exprLogica;
-		p+="</ul>";
-		p+="</li>";
-
-		p+="<li><span class='caret'>Valor-logico</span>";
-		p+="<ul class='nested'>";
-		p+=b;
-		p+="</ul>";
-		p+="</li>";
-
-		p+="<li><span class='caret'>Aumento</span>";
-		p+="<ul class='nested'>";
-		p+=aumento;
-		p+="</ul>";
-		p+="</li>";
-
-		p+="<li><span class='caret'>Instrucciones</span>";
-		p+="<ul class='nested'>";
-		p+=instrucciones;
-		p+="</ul>";
-		p+="</li>";
-		
-		p+="</ul>";
-		p+="</li>";
-
-		return p;
+		return "for "+var_arr + "in range ("+aumento+")\n\t"+
+				instrucciones;
 	},
 
 	nuevoIf: function (expresionLogica, instrucciones) {
 
-		var p="<li><span class='caret'> IF </span>";
-		p+="<ul class='nested'>";
-		
-
-		p+="<li><span class='caret'>Valor-logico</span>";
-		p+="<ul class='nested'>";
-		p+=expresionLogica;
-		p+="</ul>";
-		p+="</li>";
-
-		p+="<li><span class='caret'>Instrucciones</span>";
-		p+="<ul class='nested'>";
-		p+=instrucciones;
-		p+="</ul>";
-		p+="</li>";
-		
-		p+="</ul>";
-		p+="</li>";
-
-		return p;
+		return "if ( "+expresionLogica+" ):\n\t"
+				+instrucciones;
 
 	},
 	nuevoElse: function (instrucciones) {
-		var p="<li><span class='caret'> ELSE </span>";
-		p+="<ul class='nested'>";
-		
-
-		p+="<li><span class='caret'>Instrucciones</span>";
-		p+="<ul class='nested'>";
-		p+=instrucciones;
-		p+="</ul>";
-		p+="</li>";
-		
-		p+="</ul>";
-		p+="</li>";
-
-		return p;
+		return "else: \n\t"+instrucciones;
 	},
 
 	nuevoElseIf: function (expresionLogica, instrx) {
-		var p="<li><span class='caret'> ELSE-IF </span>";
-		p+="<ul class='nested'>";
-		
-
-		p+="<li><span class='caret'>Valor-logico</span>";
-		p+="<ul class='nested'>";
-		p+=expresionLogica;
-		p+="</ul>";
-		p+="</li>";
-
-		p+="<li><span class='caret'>Instrucciones</span>";
-		p+="<ul class='nested'>";
-		p+=instrx;
-		p+="</ul>";
-		p+="</li>";
-		
-		p+="</ul>";
-		p+="</li>";
-
-		return p;
+		return "elif ( "+expresionLogica+" ):\n\t"
+				+instrucciones;
 	},
 
 	nuevoSwitch: function (varx, casos) {
 
-		var p="<li><span class='caret'> SWITCH </span>";
-		p+="<ul class='nested'>";
-		
-
-		p+="<li><span class='caret'>Valor</span>";
-		p+="<ul class='nested'>";
-		p+=varx;
-		p+="</ul>";
-		p+="</li>";
-
-		p+="<li><span class='caret'>Casos</span>";
-		p+="<ul class='nested'>";
-		p+=casos;
-		p+="</ul>";
-		p+="</li>";
-		
-		p+="</ul>";
-		p+="</li>";
-
-		return p;
+		return"def switch("+varx+"):"
+				+"switcher = {\n"+casos+"}\n";		
 	},
 
 	nuevoCaso: function (valor, instr) {
 
-		var p="<li><span class='caret'> CASO </span>";
-		p+="<ul class='nested'>";
-		
-
-		p+="<li><span class='caret'>Valor</span>";
-		p+="<ul class='nested'>";
-		p+=valor;
-		p+="</ul>";
-		p+="</li>";
-
-		p+="<li><span class='caret'>Instrucciones</span>";
-		p+="<ul class='nested'>";
-		p+=instr;
-		p+="</ul>";
-		p+="</li>";
-		
-		p+="</ul>";
-		p+="</li>";
-
-		return p;
+		return "";
 
 	},
 	nuevoDefault: function (instr) {
