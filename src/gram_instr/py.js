@@ -20,93 +20,93 @@ const instruccionesPY = {
 	},
 
 	nuevoWhile: function (exprLogica, instrucciones) {
-		return "while("+exprLogica+"): \n\t"+ instrucciones+"\n";
+		return "while("+exprLogica+"): \n"+ indent(instrucciones)+"\n";
 	},
 	nuevoDoWhile: function (exprLogica, instrucciones) {
-		return "while True: \n\t"+
-				instrucciones+
+		return "while True: \n"+
+				indent(instrucciones)+
 				"\tif ("+exprLogica+");\n"+
 				"\tbreak;";
 	},
 
 	nuevoFor: function (var_arr, expresionLogica, aumento, instrucciones) {
 
-		return "for "+var_arr + "in range ("+aumento+")\n\t"+
-				instrucciones;
+		return "for "+var_arr + "in range ("+aumento+")\n"+
+				indent(instrucciones);
 	},
 
 	nuevoIf: function (expresionLogica, instrucciones) {
 
-		return "if ( "+expresionLogica+" ):\n\t"
-				+instrucciones;
+		return "if ( "+expresionLogica+" ):\n"
+				+indent(instrucciones);
 
 	},
 	nuevoElse: function (instrucciones) {
-		return "else: \n\t"+instrucciones;
+		return "else: \n"+indent(instrucciones);
 	},
 
 	nuevoElseIf: function (expresionLogica, instrx) {
-		return "elif ( "+expresionLogica+" ):\n\t"
-				+instrucciones;
+		return "elif ( "+expresionLogica+" ):\n"
+				+indent(instrucciones);
 	},
 
 	nuevoSwitch: function (varx, casos) {
 
 		return"def switch("+varx+"):"
-				+"switcher = {\n"+casos+"}\n";		
+				+indent("switcher = {\n"+casos+"}\n");		
 	},
 
 	nuevoCaso: function (valor, instr) {
 
-		return "\t"+valor+": "+instr+",\n";
+		return valor+": "+instr+",\n";
 
 	},
 	nuevoDefault: function (instr) {
-		return "\tdefault: "+instr+",\n";
+		return "default: "+instr+",\n";
 	},
 
 	nuevoMetodo: function (nombre, params, instrx) {
 
 		return "def "+ nombre +"(" + params +"):\n"+
-				instrx;
+				indent(instrx);
 
 	},
 	nuevoFuncion: function (nombre, params, tipo, instrx) {
 		return "def "+ nombre +"(" + params +"):\n"+
-				instrx;
+				indent(instrx);
 	},
 	nuevollamada: function (nombre, params) {
 		
-		return "\t"+nombre+"("+params+")\n";
+		return nombre+"("+params+")\n";
 
 	},
 	nuevoAsig: function (nombre, valores) {
-		return "\t"+nombre+" = "+valores+"\n";
+		return nombre+" = "+valores+"\n";
 	},
 	nuevoBreak: function () {
 		//no recibe parametros
-		return "\tbreak\n";
+		return "break\n";
 		
 	},
 	nuevoContinue: function () {
 		//no recibe parametros
-		return "\tcontinue\n";
+		return "continue\n";
 	},
 	nuevoReturn: function (valores) {
-		return "\treturn "+valores+"\n";
+		return "return "+valores+"\n";
 	},
 	nuevoValorAsg: function (tipo, valor) {//ultima derivacion
 		return valor;
 	},
 	nuevoParentesis: function (val) {
-		return "\t("+val+")\n"
+		return "("+val+")"
 	},
 	nuevaOpr: function (Izq, Der, tipo) {
 
 		return Izq + tipo + Der ;
 	},
 	nuevaUnar: function (tipo, valor) {
-		return "\t"+valor+tipo+"\n";
+		return valor+tipo+"\n";
 	}
 
 }

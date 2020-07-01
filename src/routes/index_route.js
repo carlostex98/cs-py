@@ -23,7 +23,7 @@ route.post('/', function (req, res) {
         ast = ast.replace(">,<", "><");
     }
 
-    result={errores: n[1], vars: n[2] , ast: ast };
+    result={errores: n[1], vars: n[2] , ast: ast , python: py_phar.parse(req.body.file_x)};
     res.redirect('/cmp');
 });
 

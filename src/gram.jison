@@ -118,26 +118,17 @@ instr_methods
     |instr_meth                 {$$ = [$1];}
 ;
 instr_meth
-    : VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,$4,$7); in_var("Void", $2);}
-    | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoFuncion($2,$4,$1,$7); in_var("Funcion", $2);}
-    | VOID MAIN PAR_A PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,"vacio",$6); in_var("main", "main");}
-    | error LLAVE_C{  in_err("Sintactico",this._$.first_line,this._$.first_column,yytext); }
-;
+    : VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,$4,$7); in_var("Void", $2);}
+    | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoFuncion($2,$4,$1,$7); in_var("Funcion", $2);}
+    | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,"vacio",$6); in_var("main", "main");}
 
-
-instr_general
-    : instr_general instr	{ $1.push($2); $$ = $1; }
-    | instr                 { $$ = [$1]; }
-;
-//normal
-instr
-    : IF PAR_A asignacion PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoIf($3,$6);}
-    | ELSE IF PAR_A asignacion PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoElseIf($4,$7);}
-    | ELSE LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoElse($3);}
-    | WHILE PAR_A asignacion PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoWhile($3,$6);}
-    | DO LLAVE_A instr_general LLAVE_C WHILE PAR_A asignacion PAR_C PUNTO_C {$$=instruccionesAPI.nuevoDoWhile($7,$3);}
+    | IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoIf($3,$6);}
+    | ELSE IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoElseIf($4,$7);}
+    | ELSE LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoElse($3);}
+    | WHILE PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoWhile($3,$6);}
+    | DO LLAVE_A instr_methods LLAVE_C WHILE PAR_A asignacion PAR_C PUNTO_C {$$=instruccionesAPI.nuevoDoWhile($7,$3);}
     | CONSOLE PUNTO WRITE PAR_A asignacion PAR_C PUNTO_C  {$$=instruccionesAPI.nuevoPrint("ln",$5);}
-    | FOR PAR_A var_for PUNTO_C asignacion PUNTO_C asignacion_icr PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoFor($3,$5,$7,$10);}
+    | FOR PAR_A var_for PUNTO_C asignacion PUNTO_C asignacion_icr PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoFor($3,$5,$7,$10);}
     | typo_var lista_v IGUAL asignacion PUNTO_C {$$=instruccionesAPI.nuevoVal($1,$2,$4); }
     | typo_var lista_v PUNTO_C {$$=instruccionesAPI.nuevoVal($1,$2,"");  }
     | BREAK PUNTO_C {$$=instruccionesAPI.nuevoBreak();}
@@ -177,8 +168,8 @@ sw_op
 ;
 
 casos
-    : CASE asignacion DOS_P instr_general {$$=instruccionesAPI.nuevoCaso($2,$4);}
-    | DEFAULT DOS_P instr_general {$$=instruccionesAPI.nuevoDefault($3);}
+    : CASE asignacion DOS_P instr_methods {$$=instruccionesAPI.nuevoCaso($2,$4);}
+    | DEFAULT DOS_P instr_methods {$$=instruccionesAPI.nuevoDefault($3);}
 ;
 var_for
     : typo_var IDENTIFICADOR IGUAL asignacion {$$=[$2,$4];}
@@ -237,7 +228,7 @@ unar_op
 symb
     : AND {$$=TIPO_OPERACION.AND;}
     | OR {$$=TIPO_OPERACION.OR;}
-    | NO_IGUAL {$$=TIPO_OPERACION.NO_IGUAL;}
+    | NOT IGUAL {$$=TIPO_OPERACION.NO_IGUAL;}
     | MAS {$$=TIPO_OPERACION.SUMA;}
     | MENOS {$$=TIPO_OPERACION.RESTA;}
     | POR {$$=TIPO_OPERACION.MULTIPLICACION;}
@@ -247,6 +238,5 @@ symb
     | MENOR {$$=TIPO_OPERACION.MENOR_QUE;}
     | MAYOR_I {$$=TIPO_OPERACION.MAYOR_IGUAL;}
     | MENOR_I {$$=TIPO_OPERACION.MENOR_IGUAL;}
-    | IGUAL_IGUAL {$$=TIPO_OPERACION.DOBLE_IGUAL;}
-    | MOD {$$=TIPO_OPERACION.MODULO}
+    | IGUAL IGUAL {$$=TIPO_OPERACION.DOBLE_IGUAL;}
 ;

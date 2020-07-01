@@ -61,8 +61,8 @@
 "&&"                    {return 'AND';}
 "||"                    {return 'OR';}
 "^"                     {return 'POW';}
-\"[^\"]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA'; }
-\'[^\'']*\'				{ yytext = yytext.substr(1,yyleng-2); in_html(yytext); return 'CADENA'; }
+\"[^\"]*\"				{ return 'CADENA'; }
+\'[^\'']*\'				{ return 'CADENA'; }
 [0-9]+"."[0-9]+  	{return 'DECIMAL';}
 [0-9]+				{return 'ENTERO';}
 ([a-zA-Z])[a-zA-Z0-9_]*	{return 'IDENTIFICADOR';}
@@ -73,7 +73,6 @@
 %{
 	
 	const instruccionesPY	= require('../src/gram_instr/py.js').instruccionesPY;
-    module.exports.clear_vars=clear_vars;
 %}
 
 
@@ -87,30 +86,24 @@ ini
 
 
 instr_methods
-    :instr_methods instr_meth   {$1.push($2); $$ = $1; }
-    |instr_meth                 {$$ = [$1];}
+    :instr_methods instr_meth   {$$=$1+$2; }
+    |instr_meth                 {$$ = $1;}
 ;
+
+
+
 instr_meth
-    : VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoMetodo($2,$4,$7); in_var("Void", $2);}
-    | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoFuncion($2,$4,$1,$7); in_var("Funcion", $2);}
-    | VOID MAIN PAR_A PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoMetodo($2,"vacio",$6); in_var("main", "main");}
-    | error LLAVE_C{  in_err("Sintactico",this._$.first_line,this._$.first_column,yytext); }
-;
+    : VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoMetodo($2,$4,$7); }
+    | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoFuncion($2,$4,$1,$7); }
+    | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoMetodo($2," ",$6); }
 
-
-instr_general
-    : instr_general instr	{ $1.push($2); $$ = $1; }
-    | instr                 { $$ = [$1]; }
-;
-//normal
-instr
-    : IF PAR_A asignacion PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoIf($3,$6);}
-    | ELSE IF PAR_A asignacion PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoElseIf($4,$7);}
-    | ELSE LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoElse($3);}
-    | WHILE PAR_A asignacion PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoWhile($3,$6);}
-    | DO LLAVE_A instr_general LLAVE_C WHILE PAR_A asignacion PAR_C PUNTO_C {$$=instruccionesPY.nuevoDoWhile($7,$3);}
+    | IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoIf($3,$6);}
+    | ELSE IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoElseIf($4,$7);}
+    | ELSE LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoElse($3);}
+    | WHILE PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoWhile($3,$6);}
+    | DO LLAVE_A instr_methods LLAVE_C WHILE PAR_A asignacion PAR_C PUNTO_C {$$=instruccionesPY.nuevoDoWhile($7,$3);}
     | CONSOLE PUNTO WRITE PAR_A asignacion PAR_C PUNTO_C  {$$=instruccionesPY.nuevoPrint("ln",$5);}
-    | FOR PAR_A var_for PUNTO_C asignacion PUNTO_C asignacion_icr PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoFor($3,$5,$7,$10);}
+    | FOR PAR_A var_for PUNTO_C asignacion PUNTO_C asignacion_icr PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoFor($3,$5,$7,$10);}
     | typo_var lista_v IGUAL asignacion PUNTO_C {$$=instruccionesPY.nuevoVal($1,$2,$4); }
     | typo_var lista_v PUNTO_C {$$=instruccionesPY.nuevoVal($1,$2,"");  }
     | BREAK PUNTO_C {$$=instruccionesPY.nuevoBreak();}
@@ -130,7 +123,7 @@ asignacion_ret
 ;
 
 asignacion_icr
-    : IDENTIFICADOR sms {$$=[$1,$2];}
+    : IDENTIFICADOR sms {$$=$1+$2;}
 
 ;
 
@@ -145,13 +138,13 @@ lista_v
 ;
 
 sw_op
-    : sw_op casos {$1.push($2); $$=$1;}
-    |casos {$$=[$1];}
+    : sw_op casos {$$=$1+$2;}
+    |casos {$$=$1;}
 ;
 
 casos
-    : CASE asignacion DOS_P instr_general {$$=instruccionesPY.nuevoCaso($2,$4);}
-    | DEFAULT DOS_P instr_general {$$=instruccionesPY.nuevoDefault($3);}
+    : CASE asignacion DOS_P instr_methods {$$=instruccionesPY.nuevoCaso($2,$4);}
+    | DEFAULT DOS_P instr_methods {$$=instruccionesPY.nuevoDefault($3);}
 ;
 var_for
     : typo_var IDENTIFICADOR IGUAL asignacion {$$=[$2,$4];}
