@@ -71,9 +71,8 @@
 
 /lex
 %{
-	const TIPO_OPERACION	= require('../src/gram_instr/py.js').TIPO_OPERACION;
-	const TIPO_VAL		= require('../src/gram_instr/py.js').TIPO_VAL;
-	const instruccionesAPI	= require('../src/gram_instr/py.js').instruccionesAPI;
+	
+	const instruccionesPY	= require('../src/gram_instr/py.js').instruccionesPY;
     module.exports.clear_vars=clear_vars;
 %}
 
@@ -83,7 +82,7 @@
 %% /* gramar def */
 
 ini
-	: instr_methods EOF {return [$1,errores, nombres];}
+	: instr_methods EOF {return $1}
 ;
 
 
@@ -92,9 +91,9 @@ instr_methods
     |instr_meth                 {$$ = [$1];}
 ;
 instr_meth
-    : VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,$4,$7); in_var("Void", $2);}
-    | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoFuncion($2,$4,$1,$7); in_var("Funcion", $2);}
-    | VOID MAIN PAR_A PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,"vacio",$6); in_var("main", "main");}
+    : VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoMetodo($2,$4,$7); in_var("Void", $2);}
+    | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoFuncion($2,$4,$1,$7); in_var("Funcion", $2);}
+    | VOID MAIN PAR_A PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoMetodo($2,"vacio",$6); in_var("main", "main");}
     | error LLAVE_C{  in_err("Sintactico",this._$.first_line,this._$.first_column,yytext); }
 ;
 
@@ -105,23 +104,23 @@ instr_general
 ;
 //normal
 instr
-    : IF PAR_A asignacion PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoIf($3,$6);}
-    | ELSE IF PAR_A asignacion PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoElseIf($4,$7);}
-    | ELSE LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoElse($3);}
-    | WHILE PAR_A asignacion PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoWhile($3,$6);}
-    | DO LLAVE_A instr_general LLAVE_C WHILE PAR_A asignacion PAR_C PUNTO_C {$$=instruccionesAPI.nuevoDoWhile($7,$3);}
-    | CONSOLE PUNTO WRITE PAR_A asignacion PAR_C PUNTO_C  {$$=instruccionesAPI.nuevoPrint("ln",$5);}
-    | FOR PAR_A var_for PUNTO_C asignacion PUNTO_C asignacion_icr PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesAPI.nuevoFor($3,$5,$7,$10);}
-    | typo_var lista_v IGUAL asignacion PUNTO_C {$$=instruccionesAPI.nuevoVal($1,$2,$4); }
-    | typo_var lista_v PUNTO_C {$$=instruccionesAPI.nuevoVal($1,$2,"");  }
-    | BREAK PUNTO_C {$$=instruccionesAPI.nuevoBreak();}
-    | RETURN asignacion_ret PUNTO_C {$$=instruccionesAPI.nuevoReturn($2);}
-    | IDENTIFICADOR sms PUNTO_C {$$=instruccionesAPI.nuevaUnar($2,$1);}
-    | IDENTIFICADOR PAR_A params2 PAR_C PUNTO_C  {$$=instruccionesAPI.nuevollamada($1,$3);}
-    | IDENTIFICADOR IGUAL asignacion PUNTO_C    {$$=instruccionesAPI.nuevoAsig($1,$3);}
-    | SWITCH PAR_A asignacion PAR_C LLAVE_A sw_op LLAVE_C {$$=instruccionesAPI.nuevoSwitch($3,$6);}
-    | CONTINUE PUNTO_C {$$=instruccionesAPI.nuevoContinue();}
-    | error PUNTO_C{  in_err("Sintactico",this._$.first_line,this._$.first_column,yytext); }
+    : IF PAR_A asignacion PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoIf($3,$6);}
+    | ELSE IF PAR_A asignacion PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoElseIf($4,$7);}
+    | ELSE LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoElse($3);}
+    | WHILE PAR_A asignacion PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoWhile($3,$6);}
+    | DO LLAVE_A instr_general LLAVE_C WHILE PAR_A asignacion PAR_C PUNTO_C {$$=instruccionesPY.nuevoDoWhile($7,$3);}
+    | CONSOLE PUNTO WRITE PAR_A asignacion PAR_C PUNTO_C  {$$=instruccionesPY.nuevoPrint("ln",$5);}
+    | FOR PAR_A var_for PUNTO_C asignacion PUNTO_C asignacion_icr PAR_C LLAVE_A instr_general LLAVE_C {$$=instruccionesPY.nuevoFor($3,$5,$7,$10);}
+    | typo_var lista_v IGUAL asignacion PUNTO_C {$$=instruccionesPY.nuevoVal($1,$2,$4); }
+    | typo_var lista_v PUNTO_C {$$=instruccionesPY.nuevoVal($1,$2,"");  }
+    | BREAK PUNTO_C {$$=instruccionesPY.nuevoBreak();}
+    | RETURN asignacion_ret PUNTO_C {$$=instruccionesPY.nuevoReturn($2);}
+    | IDENTIFICADOR sms PUNTO_C {$$=instruccionesPY.nuevaUnar($2,$1);}
+    | IDENTIFICADOR PAR_A params2 PAR_C PUNTO_C  {$$=instruccionesPY.nuevollamada($1,$3);}
+    | IDENTIFICADOR IGUAL asignacion PUNTO_C    {$$=instruccionesPY.nuevoAsig($1,$3);}
+    | SWITCH PAR_A asignacion PAR_C LLAVE_A sw_op LLAVE_C {$$=instruccionesPY.nuevoSwitch($3,$6);}
+    | CONTINUE PUNTO_C {$$=instruccionesPY.nuevoContinue();}
+    | error PUNTO_C{  }
 ;
 
 
@@ -136,13 +135,13 @@ asignacion_icr
 ;
 
 sms
-    : MAS MAS  {$$=TIPO_OPERACION.INCREMENTO;}
-    | MENOS MENOS {$$=TIPO_OPERACION.DECREMENTO;}
+    : MAS MAS  {$$="++";}
+    | MENOS MENOS {$$="--";}
 ;
 
 lista_v
-    :lista_v COMA IDENTIFICADOR {$1.push($3); in_var("Variable", $3); }
-    | IDENTIFICADOR {$$=[$1]; in_var("Variable", $1);}
+    :lista_v COMA IDENTIFICADOR {$1.push($3);}
+    | IDENTIFICADOR {$$=[$1]; }
 ;
 
 sw_op
@@ -151,8 +150,8 @@ sw_op
 ;
 
 casos
-    : CASE asignacion DOS_P instr_general {$$=instruccionesAPI.nuevoCaso($2,$4);}
-    | DEFAULT DOS_P instr_general {$$=instruccionesAPI.nuevoDefault($3);}
+    : CASE asignacion DOS_P instr_general {$$=instruccionesPY.nuevoCaso($2,$4);}
+    | DEFAULT DOS_P instr_general {$$=instruccionesPY.nuevoDefault($3);}
 ;
 var_for
     : typo_var IDENTIFICADOR IGUAL asignacion {$$=[$2,$4];}
@@ -165,11 +164,12 @@ params2
     | params2 COMA asignacion   {$1.push($3); $$=$1;}
     | asignacion {$$=[$1];}
 ;
+
 /*para los valores en la de claracion de una finc*/
 params
     : /*empty*/   {$$="";}
-    | params COMA typo_var IDENTIFICADOR {$1.push($3+" -> "+$4); $$=$1;}
-    | typo_var IDENTIFICADOR {$$=[$1+" -> "+$2];}
+    | params COMA typo_var IDENTIFICADOR {$1.push($4); $$=$1;}
+    | typo_var IDENTIFICADOR {$$=[$2];}
 ;
 
 
@@ -181,46 +181,41 @@ typo_var
     | BOOLEAN   {$$=$1}
 ;
 
-otro_print
-    : PRINT {$$=$1}
-    | PRINTLN {$$=$1}
-;
+
 
 asignacion
-    : asignacion symb asignacion {$$=instruccionesAPI.nuevaOpr($1,$3,$2);}
+    : asignacion symb asignacion {$$=instruccionesPY.nuevaOpr($1,$3,$2);}
     | valx  {$$=$1;}
 ;
 
 valx
-    : ENTERO    {$$=instruccionesAPI.nuevoValorAsg(TIPO_VAL.NUMERO,$1);}
-    | DECIMAL   {$$=instruccionesAPI.nuevoValorAsg(TIPO_VAL.NUMERO,$1);}
-    | IDENTIFICADOR {$$=instruccionesAPI.nuevoValorAsg(TIPO_VAL.IDENTIFICADOR,$1);}
-    | IDENTIFICADOR PAR_A params2 PAR_C {$$=instruccionesAPI.nuevollamada($1,$3);}
-    | TRUE {$$=instruccionesAPI.nuevoValorAsg(TIPO_VAL.IDENTIFICADOR,$1);}
-    | FALSE {$$=instruccionesAPI.nuevoValorAsg(TIPO_VAL.IDENTIFICADOR,$1);}
-    | CADENA {$$=instruccionesAPI.nuevoValorAsg(TIPO_VAL.CADENA,$1);}
-    | PAR_A asignacion PAR_C {$$=instruccionesAPI.nuevoParentesis($2);}
+    : ENTERO    {$$=$1}
+    | DECIMAL   {$$=$1}
+    | IDENTIFICADOR {$$=$1}
+    | IDENTIFICADOR PAR_A params2 PAR_C {$$=instruccionesPY.nuevollamada($1,$3);}
+    | TRUE {$$=$1}
+    | FALSE {$$=$1}
+    | CADENA {$$=$1}
+    | PAR_A asignacion PAR_C {$$=instruccionesPY.nuevoParentesis($2);}
     | unar_op   {$$=$1;}
 ;
 
 unar_op
-    :MENOS valx {$$=instruccionesAPI.nuevaUnar(TIPO_OPERACION.RESTA,$2);}
-    |NOT valx   {$$=instruccionesAPI.nuevaUnar(TIPO_OPERACION.NOT,$2);}
+    :MENOS valx {$$=instruccionesPY.nuevaUnar("-",$2);}
+    |NOT valx   {$$=instruccionesPY.nuevaUnar("!",$2);}
 ;
 
 symb
-    : AND {$$=TIPO_OPERACION.AND;}
-    | OR {$$=TIPO_OPERACION.OR;}
-    | NO_IGUAL {$$=TIPO_OPERACION.NO_IGUAL;}
-    | MAS {$$=TIPO_OPERACION.SUMA;}
-    | MENOS {$$=TIPO_OPERACION.RESTA;}
-    | POR {$$=TIPO_OPERACION.MULTIPLICACION;}
-    | DIV {$$=TIPO_OPERACION.DIVISION;}
-    | POW {$$=TIPO_OPERACION.POW;}
-    | MAYOR {$$=TIPO_OPERACION.MAYOR_QUE;}
-    | MENOR {$$=TIPO_OPERACION.MENOR_QUE;}
-    | MAYOR_I {$$=TIPO_OPERACION.MAYOR_IGUAL;}
-    | MENOR_I {$$=TIPO_OPERACION.MENOR_IGUAL;}
-    | IGUAL_IGUAL {$$=TIPO_OPERACION.DOBLE_IGUAL;}
-    | MOD {$$=TIPO_OPERACION.MODULO}
+    : AND {$$=" and ";}
+    | OR {$$=" or ";}
+    | NOT IGUAL {$$=" not ";}
+    | MAS {$$=" + ";}
+    | MENOS {$$=" - ";}
+    | POR {$$=" * ";}
+    | DIV {$$=" / ";}
+    | MAYOR {$$=">";}
+    | MENOR {$$="<";}
+    | MAYOR IGUAL {$$=" >= ";}
+    | MENOR IGUAL {$$=" <= ";}
+    | IGUAL IGUAL {$$=" == ";}
 ;

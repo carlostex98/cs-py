@@ -2,8 +2,9 @@ const express = require('express');
 const route = express.Router();
 var bodyParser = require('body-parser');
 //var jison = require('jison');
-var result = { errores: null, copia: null, ast: null , py: null};
+var result = { errores: null, copia: null, ast: null };
 var parser = require('../gram');
+var py_phar = require('../gram_py');
 
 route.get('/', function (req, res) {
     res.render('index.ejs');
@@ -22,7 +23,7 @@ route.post('/', function (req, res) {
         ast = ast.replace(">,<", "><");
     }
 
-    result={errores: n[1], vars: n[2] , ast: ast , py: null};
+    result={errores: n[1], vars: n[2] , ast: ast };
     res.redirect('/cmp');
 });
 
