@@ -17,7 +17,7 @@
 "char"                  {return 'CHAR';}
 "int"                    {return 'INT';}
 "double"                {return 'DOUBLE';}
-"boolean"               {return 'BOOLEAN';}
+"bool"               {return 'BOOLEAN';}
 "true"                  {return 'TRUE';}
 "false"                 {return 'FALSE';}
 "if"                    {return 'IF';}
@@ -67,12 +67,12 @@
 [0-9]+				{return 'ENTERO';}
 ([a-zA-Z])[a-zA-Z0-9_]*	{return 'IDENTIFICADOR';}
 <<EOF>>				    {return 'EOF';}
-.					    {  }
+.					    { return 'content'; }
 
 /lex
 %{
 	
-	const instruccionesPY	= require('../src/gram_instr/py.js').instruccionesPY;
+	const instruccionesHT	= require('../src/gram_instr/ht_instr.js').instruccionesHT;
 %}
 
 

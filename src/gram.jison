@@ -43,7 +43,7 @@
 "char"                  {return 'CHAR';}
 "int"                    {return 'INT';}
 "double"                {return 'DOUBLE';}
-"boolean"               {return 'BOOLEAN';}
+"bool"               {return 'BOOLEAN';}
 "true"                  {return 'TRUE';}
 "false"                 {return 'FALSE';}
 "if"                    {return 'IF';}
