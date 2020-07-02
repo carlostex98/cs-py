@@ -62,7 +62,7 @@
     <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <a class="nav-link active" id="tokens-tab" data-toggle="tab" href="#tok" role="tab" aria-controls="home"
-          aria-selected="true">Tokens</a>
+          aria-selected="true">HTML-JSON</a>
       </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="err-tab" data-toggle="tab" href="#err" role="tab" aria-controls="profile"
@@ -83,8 +83,58 @@
     </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="tok" role="tabpanel" aria-labelledby="tok-tab">1</div>
-      <div class="tab-pane fade" id="err" role="tabpanel" aria-labelledby="err-tab">2</div>
-      <div class="tab-pane fade" id="var" role="tabpanel" aria-labelledby="var-tab">3</div>
+      <div class="tab-pane fade" id="err" role="tabpanel" aria-labelledby="err-tab">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tipo</th>
+              <th>Linea</th>
+              <th>Columna</th>
+              <th>Descripcion</th>
+          </tr>
+          </thead>
+          <tbody>
+            <% errores.forEach(function(ert){ %>
+              <tr>
+                  <td><%= ert[0]%></td>
+                  <td><%= ert[1]%></td>
+                  <td><%= ert[2]%></td>
+                  <td><%= ert[3]%></td>
+                  <td><%= ert[4]%></td>
+              </tr>
+            <% })%>
+
+          </tbody>
+
+          
+              
+      </table>
+      </div>
+      <div class="tab-pane fade" id="var" role="tabpanel" aria-labelledby="var-tab">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Tipo</th>
+              <th>Linea</th>
+          </tr>
+          </thead>
+          
+          <tbody>
+            <% vars.forEach(function(ert){ %>
+              <tr>
+                  <td><%= ert[0]%></td>
+                  <td><%= ert[1]%></td>
+                  <td><%= ert[2]%></td>
+                  
+              </tr>
+
+            <% })%>
+          </tbody>
+
+      </table>
+      </div>
       <div class="tab-pane fade" id="ast" role="tabpanel" aria-labelledby="ast-tab">
         <%- ast%>
       </div>

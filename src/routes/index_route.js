@@ -2,7 +2,7 @@ const express = require('express');
 const route = express.Router();
 var bodyParser = require('body-parser');
 //var jison = require('jison');
-var result = { errores: null, copia: null, ast: null };
+var result = { errores: null, copia: null, ast: null, python : null };
 var parser = require('../gram');
 var py_phar = require('../gram_py');
 

@@ -6,11 +6,11 @@
     let ht = [];
     
     function in_err(tipo, lin, col, decrip){
-        var c={id:errores.length, tipo:tipo, linea:lin, columna:col, descripcion:decrip};
+        var c=[errores.length, tipo, lin, col, decrip];
         errores.push(c);
     }
-    function in_var(tipo, nombre){
-        var c = {tipo:tipo, nombre:nombre};
+    function in_var(tipo, nombre, ln){
+        var c = [nombre, tipo, ln];
         nombres.push(c);
     }
     function in_comment(texto, ln, cl){
@@ -118,9 +118,9 @@ instr_methods
     |instr_meth                 {$$ = [$1];}
 ;
 instr_meth
-    : VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,$4,$7); in_var("Void", $2);}
-    | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoFuncion($2,$4,$1,$7); in_var("Funcion", $2);}
-    | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,"vacio",$6); in_var("main", "main");}
+    : VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,$4,$7); in_var("Void", $2, this._$.first_line);}
+    | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoFuncion($2,$4,$1,$7); in_var("Funcion", $2, this._$.first_line);}
+    | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,"vacio",$6); in_var("main", "main", this._$.first_line);}
 
     | IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoIf($3,$6);}
     | ELSE IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoElseIf($4,$7);}
@@ -158,8 +158,8 @@ sms
 ;
 
 lista_v
-    :lista_v COMA IDENTIFICADOR {$1.push($3); in_var("Variable", $3); }
-    | IDENTIFICADOR {$$=[$1]; in_var("Variable", $1);}
+    :lista_v COMA IDENTIFICADOR {$1.push($3); in_var("Variable", $3, this._$.first_line); }
+    | IDENTIFICADOR {$$=[$1]; in_var("Variable", $1, this._$.first_line);}
 ;
 
 sw_op
@@ -233,10 +233,9 @@ symb
     | MENOS {$$=TIPO_OPERACION.RESTA;}
     | POR {$$=TIPO_OPERACION.MULTIPLICACION;}
     | DIV {$$=TIPO_OPERACION.DIVISION;}
-    | POW {$$=TIPO_OPERACION.POW;}
     | MAYOR {$$=TIPO_OPERACION.MAYOR_QUE;}
     | MENOR {$$=TIPO_OPERACION.MENOR_QUE;}
-    | MAYOR_I {$$=TIPO_OPERACION.MAYOR_IGUAL;}
-    | MENOR_I {$$=TIPO_OPERACION.MENOR_IGUAL;}
+    | MAYOR IGUAL {$$=TIPO_OPERACION.MAYOR_IGUAL;}
+    | MENOR IGUAL {$$=TIPO_OPERACION.MENOR_IGUAL;}
     | IGUAL IGUAL {$$=TIPO_OPERACION.DOBLE_IGUAL;}
 ;
