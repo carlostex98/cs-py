@@ -30,11 +30,16 @@ route.post('/', function (req, res) {
     }
     var mx = html2json(n[3]);
     //console.log();
-
+    let r=[];
+    r=req.body.file_x.split("\n");
+    let err=n[1];
+    for (let i = 0; i < err.length; i++) {
+        err[i][4]=r[err[i][2]-1].substr(err[i][3]);
+    }
 
 
     result = {
-        errores: n[1],
+        errores: err,
         vars: n[2],
         ast: ast,
         python: py_phar.parse(req.body.file_x),
@@ -52,20 +57,20 @@ route.get('/cmp', function (req, res) {
 
 function add_coments(texto, comm) {
     aux = [];
-    var aux_2="";
+    var aux_2 = "";
     var x = 1;
     var y = 1;
     var n = 0;
     for (let i = 0; i < texto.length; i++) {
 
         if (comm[n][1] == y && comm[n][2] == x) {
-            aux_2+=texto[i];
+            aux_2 += texto[i];
             aux.push(aux_2);
-            aux.push("#"+comm[i][0]);
+            aux.push("#" + comm[i][0]);
             n++;
 
-        }else{
-            aux_2+=texto[i];
+        } else {
+            aux_2 += texto[i];
         }
 
         if (texto[i] == '\n') {

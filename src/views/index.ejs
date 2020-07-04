@@ -23,15 +23,11 @@
     <form class="container" method="POST" action="/">
       <br>
       <div class="form-group">
-        <label for="exampleFormControlTextarea1"><strong>Code here!</strong></label>
-        <textarea
-          class="form-control"
-          id="file_x"
-          name="file_x"
-          rows="10"
-        ></textarea>
+        <label ><strong>Code here!</strong></label>
+        <textarea class="form-control" id="file_x" name="file_x" rows="10" ></textarea>
       </div>
       <button class="btn btn-primary" type="submit">Compilar</button>
+      <input type='file' accept='text/plain' onchange='openFile1(event)'><br>
     </form>
 
     <!-- Optional JavaScript -->
@@ -51,5 +47,18 @@
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
       crossorigin="anonymous"
     ></script>
+    <script>
+      var openFile1 = function (event) {
+          var input = event.target;
+
+          var reader = new FileReader();
+          reader.onload = function () {
+              var text = reader.result;
+              var node = document.getElementById('file_x');
+              node.value = text;
+          };
+          reader.readAsText(input.files[0]);
+      };
+  </script>
   </body>
 </html>
