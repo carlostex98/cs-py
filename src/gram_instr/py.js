@@ -1,3 +1,4 @@
+const { main } = require("../gram");
 
 
 function indent(texto){
@@ -47,13 +48,13 @@ const instruccionesPY = {
 
 	nuevoElseIf: function (expresionLogica, instrx) {
 		return "elif ( "+expresionLogica+" ):\n"
-				+indent(instrucciones);
+				+indent(instrx);
 	},
 
 	nuevoSwitch: function (varx, casos) {
 
-		return"def switch("+varx+"):"
-				+indent("switcher = {\n"+casos+"}\n");		
+		return"def switch("+varx+"):\n"
+				+indent("switcher = {\n"+ indent(casos) +"}\n");		
 	},
 
 	nuevoCaso: function (valor, instr) {
@@ -106,7 +107,10 @@ const instruccionesPY = {
 		return Izq + tipo + Der ;
 	},
 	nuevaUnar: function (tipo, valor) {
-		return valor+tipo+"\n";
+		return valor+tipo;
+	},
+	nuevoMain:function(){
+		return "if __name__=\"main\" \n\tmain()"
 	}
 
 }

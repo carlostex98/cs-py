@@ -1,7 +1,11 @@
 %{
 	//nuestras estructuras
-    let errores =[];
-   
+    var vmx=0;
+   function s_main(){
+       if(vmx!=0){
+           return instruccionesPY.nuevoMain();
+       }
+   }
 %}
 
 
@@ -66,13 +70,13 @@
 [0-9]+"."[0-9]+  	{return 'DECIMAL';}
 [0-9]+				{return 'ENTERO';}
 ([a-zA-Z])[a-zA-Z0-9_]*	{return 'IDENTIFICADOR';}
-<<EOF>>				    {return 'EOF';}
-.					    { return 'content'; }
+<<EOF>>				    {return 'EOF'; vmx=0;}
+.					    { }
 
 /lex
 %{
 	
-	const instruccionesHT	= require('../src/gram_instr/ht_instr.js').instruccionesHT;
+	const instruccionesPY	= require('../src/gram_instr/py.js').instruccionesPY;
 %}
 
 
@@ -81,7 +85,7 @@
 %% /* gramar def */
 
 ini
-	: instr_methods EOF {return $1}
+	: instr_methods EOF {return $1+s_main();}
 ;
 
 
@@ -95,7 +99,7 @@ instr_methods
 instr_meth
     : VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoMetodo($2,$4,$7); }
     | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoFuncion($2,$4,$1,$7); }
-    | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoMetodo($2," ",$6); }
+    | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoMetodo($2," ",$6); vmx=1;}
 
     | IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoIf($3,$6);}
     | ELSE IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoElseIf($4,$7);}

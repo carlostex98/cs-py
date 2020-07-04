@@ -190,7 +190,7 @@ const instruccionesAPI = {
 
 		p+="<li><span class='caret'>Valor-variable</span>";
 		p+="<ul class='nested'>";
-		p+=exprLogica;
+		p+=expresionLogica;
 		p+="</ul>";
 		p+="</li>";
 

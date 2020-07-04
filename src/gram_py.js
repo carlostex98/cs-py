@@ -84,7 +84,7 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
-return $$[$0-1]
+return $$[$0-1]+s_main();
 break;
 case 2:
 this.$=$$[$0-1]+$$[$0]; 
@@ -99,7 +99,7 @@ case 5:
 this.$=instruccionesPY.nuevoFuncion($$[$0-6],$$[$0-4],$$[$0-7],$$[$0-1]); 
 break;
 case 6:
-this.$=instruccionesPY.nuevoMetodo($$[$0-5]," ",$$[$0-1]); 
+this.$=instruccionesPY.nuevoMetodo($$[$0-5]," ",$$[$0-1]); vmx=1;
 break;
 case 7:
 this.$=instruccionesPY.nuevoIf($$[$0-4],$$[$0-1]);
@@ -501,8 +501,12 @@ _handle_error:
 }};
 
 	//nuestras estructuras
-    let errores =[];
-   
+    var vmx=0;
+   function s_main(){
+       if(vmx!=0){
+           return instruccionesPY.nuevoMain();
+       }
+   }
 
 	
 	const instruccionesPY	= require('../src/gram_instr/py.js').instruccionesPY;
@@ -946,13 +950,13 @@ case 54:return 52;
 break;
 case 55:return 8;
 break;
-case 56:return 5;
+case 56:return 5; vmx=0;
 break;
-case 57:  
+case 57: 
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:\/\/.*)/,/^(?:[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])/,/^(?:string\b)/,/^(?:char\b)/,/^(?:int\b)/,/^(?:double\b)/,/^(?:boolean\b)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:if\b)/,/^(?:else\b)/,/^(?:switch\b)/,/^(?:case\b)/,/^(?:default\b)/,/^(?:break\b)/,/^(?:while\b)/,/^(?:do\b)/,/^(?:for\b)/,/^(?:void\b)/,/^(?:return\b)/,/^(?:Console\b)/,/^(?:Write\b)/,/^(?:main\b)/,/^(?:continue\b)/,/^(?:\+)/,/^(?:-)/,/^(?:\*)/,/^(?:\/)/,/^(?:\+\+)/,/^(?:--)/,/^(?:\()/,/^(?:\))/,/^(?:\{)/,/^(?:\})/,/^(?:\.)/,/^(?:;)/,/^(?::)/,/^(?:>)/,/^(?:<)/,/^(?:>=)/,/^(?:<=)/,/^(?:=)/,/^(?:==)/,/^(?:!)/,/^(?:%)/,/^(?:!=)/,/^(?:,)/,/^(?:&&)/,/^(?:\|\|)/,/^(?:\^)/,/^(?:"[^\"]*")/,/^(?:'[^\'']*')/,/^(?:[0-9]+\.[0-9]+)/,/^(?:[0-9]+)/,/^(?:([a-zA-Z])[a-zA-Z0-9_]*)/,/^(?:$)/,/^(?:.)/],
+rules: [/^(?:\s+)/,/^(?:\/\/.*)/,/^(?:[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])/,/^(?:string\b)/,/^(?:char\b)/,/^(?:int\b)/,/^(?:double\b)/,/^(?:bool\b)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:if\b)/,/^(?:else\b)/,/^(?:switch\b)/,/^(?:case\b)/,/^(?:default\b)/,/^(?:break\b)/,/^(?:while\b)/,/^(?:do\b)/,/^(?:for\b)/,/^(?:void\b)/,/^(?:return\b)/,/^(?:Console\b)/,/^(?:Write\b)/,/^(?:main\b)/,/^(?:continue\b)/,/^(?:\+)/,/^(?:-)/,/^(?:\*)/,/^(?:\/)/,/^(?:\+\+)/,/^(?:--)/,/^(?:\()/,/^(?:\))/,/^(?:\{)/,/^(?:\})/,/^(?:\.)/,/^(?:;)/,/^(?::)/,/^(?:>)/,/^(?:<)/,/^(?:>=)/,/^(?:<=)/,/^(?:=)/,/^(?:==)/,/^(?:!)/,/^(?:%)/,/^(?:!=)/,/^(?:,)/,/^(?:&&)/,/^(?:\|\|)/,/^(?:\^)/,/^(?:"[^\"]*")/,/^(?:'[^\'']*')/,/^(?:[0-9]+\.[0-9]+)/,/^(?:[0-9]+)/,/^(?:([a-zA-Z])[a-zA-Z0-9_]*)/,/^(?:$)/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57],"inclusive":true}}
 });
 return lexer;

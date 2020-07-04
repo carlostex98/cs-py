@@ -28,6 +28,24 @@
         comm=[];
         ht = [];
     }
+
+    function r_ht(){
+        var x= "";
+        for(let i =0; i<ht.length;i++){
+            x+=ht[i];
+        }
+        return x;
+    }
+    function ht_fix(texto){
+        for (let i = 0; i < texto.length; i++) {
+            texto = texto.replace("<", "#");
+        }
+        for (let i = 0; i < texto.length; i++) {
+            texto = texto.replace(">", "#");
+        }
+        return texto;
+    }
+
 %}
 
 
@@ -37,7 +55,7 @@
 
 %%
 \s+                      {}                       
-"//".*	                  {in_comment(yytext, yylloc.first_line, yylloc.first_column);}                      
+[/][/].*                  {in_comment(yytext, yylloc.first_line, yylloc.first_column);}                      
 [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]	       { in_comment(yytext, yylloc.first_line, yylloc.first_column); }
 "string"                {return 'STRING';}
 "char"                  {return 'CHAR';}
@@ -88,7 +106,7 @@
 "||"                    {return 'OR';}
 "^"                     {return 'POW';}
 \"[^\"]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA'; }
-\'[^\'']*\'				{ yytext = yytext.substr(1,yyleng-2); in_html(yytext); return 'CADENA'; }
+\'[^\'']*\'				{in_html(yytext.substr(1,yyleng-2)); return 'CADENA_2'; }
 [0-9]+"."[0-9]+  	{return 'DECIMAL';}
 [0-9]+				{return 'ENTERO';}
 ([a-zA-Z])[a-zA-Z0-9_]*	{return 'IDENTIFICADOR';}
@@ -109,7 +127,7 @@
 %% /* gramar def */
 
 ini
-	: instr_methods EOF {return [$1,errores, nombres];}
+	: instr_methods EOF {return [$1,errores, nombres, r_ht()];}
 ;
 
 
@@ -216,6 +234,7 @@ valx
     | TRUE {$$=instruccionesAPI.nuevoValorAsg(TIPO_VAL.IDENTIFICADOR,$1);}
     | FALSE {$$=instruccionesAPI.nuevoValorAsg(TIPO_VAL.IDENTIFICADOR,$1);}
     | CADENA {$$=instruccionesAPI.nuevoValorAsg(TIPO_VAL.CADENA,$1);}
+    | CADENA_2 {$$=instruccionesAPI.nuevoValorAsg(TIPO_VAL.CADENA,ht_fix($1));}
     | PAR_A asignacion PAR_C {$$=instruccionesAPI.nuevoParentesis($2);}
     | unar_op   {$$=$1;}
 ;
