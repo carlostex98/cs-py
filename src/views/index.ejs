@@ -27,9 +27,14 @@
         <textarea class="form-control" id="file_x" name="file_x" rows="10" ></textarea>
       </div>
       <button class="btn btn-primary" type="submit">Compilar</button>
-      <input type='file' accept='text/plain' onchange='openFile1(event)'><br>
-    </form>
 
+    </form>
+    <br>
+    <div class="container" >
+      <button onclick="saveTextAsFile(file_x.value,'download.cs')" class="btn btn-primary">Guardar en el PC</button>
+      <input type='file' accept='cs' onchange='openFile1(event)'><br>
+    </div>
+    
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
@@ -59,6 +64,32 @@
           };
           reader.readAsText(input.files[0]);
       };
+  </script>
+  <script>
+    function saveTextAsFile(textToWrite, fileNameToSaveAs)
+    {
+    	var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'}); 
+    	var downloadLink = document.createElement("a");
+    	downloadLink.download = fileNameToSaveAs;
+    	downloadLink.innerHTML = "Download File";
+    	if (window.webkitURL != null)
+    	{
+    		// Chrome allows the link to be clicked
+    		// without actually adding it to the DOM.
+    		downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+    	}
+    	else
+    	{
+    		// Firefox requires the link to be added to the DOM
+    		// before it can be clicked.
+    		downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+    		downloadLink.onclick = destroyClickedElement;
+    		downloadLink.style.display = "none";
+    		document.body.appendChild(downloadLink);
+    	}
+    
+    	downloadLink.click();
+    }
   </script>
   </body>
 </html>

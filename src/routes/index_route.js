@@ -34,7 +34,7 @@ route.post('/', function (req, res) {
     r=req.body.file_x.split("\n");
     let err=n[1];
     for (let i = 0; i < err.length; i++) {
-        err[i][4]=r[err[i][2]-1].substr(err[i][3]);
+        err[i][4]=r[err[i][2]-1];
     }
 
 
