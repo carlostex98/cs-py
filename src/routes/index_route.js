@@ -43,7 +43,7 @@ route.post('/', function (req, res) {
         vars: n[2],
         ast: ast,
         python: py_phar.parse(req.body.file_x),
-        json_x: JSON.stringify(mx),
+        json_x: JSON.stringify(mx, null, "\t"),
         html_x: n[3]
     };
     res.redirect('/cmp');
