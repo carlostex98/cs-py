@@ -1,50 +1,6 @@
 %{
 	//nuestras estructuras
-    let errores =[];
-    let nombres=[];
-    let comm=[];
-    let ht = [];
     
-    function in_err(tipo, lin, col, decrip){
-        var c=[errores.length, tipo, lin, col, decrip];
-        errores.push(c);
-    }
-    function in_var(tipo, nombre, ln){
-        var c = [nombre, tipo, ln];
-        nombres.push(c);
-    }
-    function in_comment(texto, ln, cl){
-        var c = [texto, ln, cl];
-        comm.push(c);
-    }
-
-    function in_html(texto){
-        ht.push(texto);
-    }
-
-    function clear_vars(){
-        errores=[];
-        nombres=[];
-        comm=[];
-        ht = [];
-    }
-
-    function r_ht(){
-        var x= "";
-        for(let i =0; i<ht.length;i++){
-            x+=ht[i];
-        }
-        return x;
-    }
-    function ht_fix(texto){
-        for (let i = 0; i < texto.length; i++) {
-            texto = texto.replace("<", "#");
-        }
-        for (let i = 0; i < texto.length; i++) {
-            texto = texto.replace(">", "#");
-        }
-        return texto;
-    }
 
 %}
 
@@ -55,8 +11,8 @@
 
 %%
 \s+                      {}                       
-[/][/].*                  {in_comment(yytext, yylloc.first_line, yylloc.first_column);}                      
-[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]	       { in_comment(yytext, yylloc.first_line, yylloc.first_column); }
+[/][/].*                  {}                      
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]	       {  }
 "string"                {return 'STRING';}
 "char"                  {return 'CHAR';}
 "int"                    {return 'INT';}
@@ -106,19 +62,19 @@
 "||"                    {return 'OR';}
 "^"                     {return 'POW';}
 \"[^\"]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA'; }
-\'[^\'']*\'				{in_html(yytext.substr(1,yyleng-2)); return 'CADENA_2'; }
+\'[^\'']*\'				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA_2'; }
 [0-9]+"."[0-9]+  	{return 'DECIMAL';}
 [0-9]+				{return 'ENTERO';}
 ([a-zA-Z])[a-zA-Z0-9_]*	{return 'IDENTIFICADOR';}
 <<EOF>>				    {return 'EOF';}
-.					    { in_err("Lexico", yylloc.first_line,yylloc.first_column, "El caracter("+yytext+")no pertenece al lenguaje"); }
+.					    { }
 
 /lex
 %{
-	const TIPO_OPERACION	= require('../src/gram_instr/instr').TIPO_OPERACION;
-	const TIPO_VAL		= require('../src/gram_instr/instr').TIPO_VAL;
-	const instruccionesAPI	= require('../src/gram_instr/instr').instruccionesAPI;
-    module.exports.clear_vars=clear_vars;
+	const TIPO_OPERACION	= require('../src/gram_instr/instr_js').TIPO_OPERACION;
+	const TIPO_VAL		= require('../src/gram_instr/instr_js').TIPO_VAL;
+	const instruccionesAPI	= require('../src/gram_instr/instr_js').instruccionesAPI;
+    
 %}
 
 
@@ -127,7 +83,7 @@
 %% /* gramar def */
 
 ini
-	: instr_methods EOF {return [$1,errores, nombres, r_ht()];}
+	: instr_methods EOF {return $1;}
 ;
 
 
@@ -136,9 +92,9 @@ instr_methods
     |instr_meth                 {$$ = [$1];}
 ;
 instr_meth
-    : VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,$4,$7); in_var("Void", $2, this._$.first_line);}
-    | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoFuncion($2,$4,$1,$7); in_var("Funcion", $2, this._$.first_line);}
-    | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,"vacio",$6); in_var("main", "main", this._$.first_line);}
+    : VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,$4,$7); }
+    | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoFuncion($2,$4,$1,$7); }
+    | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,"vacio",$6); }
 
     | IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoIf($3,$6);}
     | ELSE IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoElseIf($4,$7);}
@@ -158,7 +114,7 @@ instr_meth
 
     | CONTINUE PUNTO_C {$$=instruccionesAPI.nuevoContinue();}
     
-    | error PUNTO_C{  in_err("Sintactico",this._$.first_line,this._$.first_column,yytext); }
+    | error PUNTO_C{   }
 ;
 
 
@@ -178,8 +134,8 @@ sms
 ;
 
 lista_v
-    :lista_v COMA IDENTIFICADOR {$1.push($3); in_var("Variable", $3, this._$.first_line); }
-    | IDENTIFICADOR {$$=[$1]; in_var("Variable", $1, this._$.first_line);}
+    :lista_v COMA IDENTIFICADOR {$1.push($3);  }
+    | IDENTIFICADOR {$$=[$1]; }
 ;
 
 sw_op
