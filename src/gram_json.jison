@@ -1,6 +1,14 @@
 %{
 	//nuestras estructuras
-    
+    function ht_fix(texto){
+        for (let i = 0; i < texto.length; i++) {
+            texto = texto.replace("<", "#");
+        }
+        for (let i = 0; i < texto.length; i++) {
+            texto = texto.replace(">", "#");
+        }
+        return texto;
+    }
 
 %}
 

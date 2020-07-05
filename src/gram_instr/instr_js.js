@@ -132,7 +132,7 @@ const instruccionesAPI = {
         return {
             "else-if": {
                 "valor_logico": expresionLogica,
-                "instrucciones": instrucciones
+                "instrucciones": instrx
             }
         }
     },

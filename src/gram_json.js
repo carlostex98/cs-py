@@ -519,7 +519,15 @@ _handle_error:
 }};
 
 	//nuestras estructuras
-    
+    function ht_fix(texto){
+        for (let i = 0; i < texto.length; i++) {
+            texto = texto.replace("<", "#");
+        }
+        for (let i = 0; i < texto.length; i++) {
+            texto = texto.replace(">", "#");
+        }
+        return texto;
+    }
 
 
 	const TIPO_OPERACION	= require('../src/gram_instr/instr_js').TIPO_OPERACION;
