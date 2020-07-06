@@ -4,6 +4,8 @@
    function s_main(){
        if(vmx!=0){
            return instruccionesPY.nuevoMain();
+       }else{
+           return " ";
        }
    }
 
@@ -25,6 +27,7 @@
 \s+                      {}                       
 [/][/].* 	                  {return 'COMENTARIO_1';}                      
 [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]	       {return 'COMENTARIO_2'; }
+"class"                 {return 'CLASS'}
 "string"                {return 'STRING';}
 "char"                  {return 'CHAR';}
 "int"                    {return 'INT';}
@@ -106,6 +109,7 @@ instr_methods
 
 instr_meth
     : /* empty */  {}
+    | CLASS IDENTIFICADOR LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoClass($2,$4);}
     | VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoMetodo($2,$4,$7); }
     | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoFuncion($2,$4,$1,$7); }
     | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoMetodo($2," ",$6); vmx=1;}
@@ -217,7 +221,7 @@ valx
 
 unar_op
     :MENOS valx {$$=instruccionesPY.nuevaUnar("-",$2);}
-    |NOT valx   {$$=instruccionesPY.nuevaUnar("!",$2);}
+    |NOT valx   {$$=instruccionesPY.nuevaUnar(" not ",$2);}
 ;
 
 symb

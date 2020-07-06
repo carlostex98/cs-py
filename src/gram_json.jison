@@ -22,6 +22,7 @@
 [/][/].*                  {return 'COMENTARIO';}                      
 [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]	       { return 'COMENTARIO'; }
 "string"                {return 'STRING';}
+"class"                 {return 'CLASS'}
 "char"                  {return 'CHAR';}
 "int"                    {return 'INT';}
 "double"                {return 'DOUBLE';}
@@ -101,6 +102,7 @@ instr_methods
 ;
 instr_meth
     : /* empty */  {}
+    | CLASS IDENTIFICADOR LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoClass($2,$4);}
     | VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,$4,$7); }
     | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoFuncion($2,$4,$1,$7); }
     | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,"vacio",$6); }

@@ -263,6 +263,13 @@ const instruccionesAPI = {
                 "texto":texto
             } 
         }
+    }, nuevoClass:function(nombre, instrucciones){
+        return{
+            "class":{
+                "nombre": nombre,
+                "instrucciones": instrucciones
+            }
+        }
     }
 
 }

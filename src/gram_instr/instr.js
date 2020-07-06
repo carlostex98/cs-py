@@ -58,30 +58,16 @@ const TIPO_INSTRUCCION = {
 //estaba diseñado para devolver un json, pero lo arregle para que 
 // devuelva un arbol en html
 const instruccionesAPI = {
-	nuevoImport: function (valor) {//ok
-		var p="<li><span class='caret'>IMPORT</span>";
-		p+="<ul class='nested'>";
-		
-
-		p+="<li><span class='caret'>Valor</span>";
-		p+="<ul class='nested'>";
-		p+=valor;
-		p+="</ul>";
-		p+="</li>";
-
-		
-		p+="</ul>";
-		p+="</li>";
-		return p;
-	},
 
 	nuevoClass: function (valor, instr) {//ok
 		var poser = "<li><span class='caret'> CLASS </span>";
 		poser+="<ul class='nested'>";
+		poser+="<li> <strong>LLAVE ABRE </strong></li>"
 		poser+="<li>Nombre:"+valor+"</li>";//ahora las instrucciones
 		poser+="<li><span class='caret'>Instrucciones</span>";
 		poser+="<ul class='nested'>";
 		poser+=instr;
+		poser+="<li> <strong>LLAVE CIERRA </strong></li>"
 		poser+="</ul>";
 		poser+="</li>";
 		poser+="</ul>";
@@ -95,7 +81,7 @@ const instruccionesAPI = {
 		p+="<li>Tipo:"+tipo+"</li>";
 		p+="<li>Nombre:"+nombre+"</li>";
 
-		p+="<li><span class='caret'>Valor</span>";
+		p+="<li><span class='caret'>Valor   <strong>=</strong></span>";
 		p+="<ul class='nested'>";
 		p+=valor;
 		p+="</ul>";

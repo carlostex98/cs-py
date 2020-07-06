@@ -28,13 +28,18 @@ route.post('/', function (req, res) {
     for (let i = 0; i < ast.length; i++) {
         ast = ast.replace(">,<", "><");
     }
-    var mx = "s";
+    var mx = "";
+    try {
+        mx = html2json(n[3]);
+    } catch (error) {
+        mx="el html contiene errores"
+    }
     //console.log();
     let r = [];
     r = req.body.file_x.split("\n");
     let err = n[1];
     for (let i = 0; i < err.length; i++) {
-        err[i][4] = r[err[i][2] - 1];
+        err[i][4] = r[err[i][2] - 1].trim();
     }
 
     pt=jsx.parse(req.body.file_x);

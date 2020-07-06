@@ -19,7 +19,10 @@
     }
 
     function in_html(texto){
-        ht.push(texto);
+        if(texto.length>1){
+            ht.push(texto);
+        }
+        
     }
 
     function clear_vars(){
@@ -57,6 +60,7 @@
 \s+                      {}                       
 [/][/].*                  { in_comment(yytext, yylloc.first_line, yylloc.first_column); return 'COMENTARIO';}                      
 [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]	       { in_comment(yytext, yylloc.first_line, yylloc.first_column); return 'COMENTARIO';}
+"class"                 {return 'CLASS'}
 "string"                {return 'STRING';}
 "char"                  {return 'CHAR';}
 "int"                    {return 'INT';}
@@ -137,6 +141,7 @@ instr_methods
 ;
 instr_meth
     : /* empty */  {}
+    | CLASS IDENTIFICADOR LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoClass($2,$4);}
     | VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,$4,$7); in_var("Void", $2, this._$.first_line);}
     | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoFuncion($2,$4,$1,$7); in_var("Funcion", $2, this._$.first_line);}
     | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,"vacio",$6); in_var("main", "main", this._$.first_line);}
