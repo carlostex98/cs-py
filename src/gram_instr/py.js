@@ -9,7 +9,7 @@ function indent(texto) {
 			texto += "\t" + res[i] + "\n";
 		}
 		return texto;
-	}else{
+	} else {
 		return "";
 	}
 
@@ -37,7 +37,7 @@ const instruccionesPY = {
 
 	nuevoFor: function (var_arr, expresionLogica, aumento, instrucciones) {
 
-		return "for " + var_arr[0] + " in range (" + aumento + ")\n" +
+		return "for " + var_arr[0] + " in range (" + var_arr[1] + " ," + expresionLogica + " ," + aumento + "):\n" +
 			indent(instrucciones);
 	},
 
@@ -117,13 +117,13 @@ const instruccionesPY = {
 		return Izq + tipo + Der;
 	},
 	nuevaUnar: function (tipo, valor) {
-		return tipo+valor;
+		return tipo + valor;
 	},
 	nuevoMain: function () {
 		return "if __name__=\"main\" \n\tmain()"
 	},
-	nuevoClass:function(nombre, instrucciones){
-		return "class " + nombre +":\n" +
+	nuevoClass: function (nombre, instrucciones) {
+		return "class " + nombre + ":\n" +
 			indent(instrucciones);
 	}
 

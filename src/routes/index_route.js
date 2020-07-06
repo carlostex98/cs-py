@@ -17,6 +17,7 @@ route.get('/', function (req, res) {
 
 route.post('/', function (req, res) {
     parser.clear_vars();
+    parser.r_control();
     var n = parser.parse(req.body.file_x);
     var ast = "";
 
@@ -39,9 +40,10 @@ route.post('/', function (req, res) {
     r = req.body.file_x.split("\n");
     let err = n[1];
     for (let i = 0; i < err.length; i++) {
-        err[i][4] = r[err[i][2] - 1].trim();
+        err[i][4] = r[err[i][2] - 1];
     }
 
+    py_phar.vpt();
     pt=jsx.parse(req.body.file_x);
     result = {
         errores: err,

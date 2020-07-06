@@ -59,23 +59,23 @@ const TIPO_INSTRUCCION = {
 // devuelva un arbol en html
 const instruccionesAPI = {
 
-	nuevoClass: function (valor, instr) {//ok
+	nuevoClass: function (valor, instr) {//ok expand
 		var poser = "<li><span class='caret'> CLASS </span>";
 		poser+="<ul class='nested'>";
-		poser+="<li> <strong>LLAVE ABRE </strong></li>"
+		poser+="<li> <strong>LLAVE ABRE </strong></li>";
 		poser+="<li>Nombre:"+valor+"</li>";//ahora las instrucciones
 		poser+="<li><span class='caret'>Instrucciones</span>";
 		poser+="<ul class='nested'>";
 		poser+=instr;
-		poser+="<li> <strong>LLAVE CIERRA </strong></li>"
 		poser+="</ul>";
+		poser+="<li> <strong>LLAVE CIERRA </strong></li>";
 		poser+="</li>";
 		poser+="</ul>";
 		poser+="</li>"
 		return poser;
 	},
 
-	nuevoVal: function (tipo, nombre, valor) {
+	nuevoVal: function (tipo, nombre, valor) {//ok expand
 		var p="<li><span class='caret'>Variable</span>";
 		p+="<ul class='nested'>";
 		p+="<li>Tipo:"+tipo+"</li>";
@@ -85,6 +85,7 @@ const instruccionesAPI = {
 		p+="<ul class='nested'>";
 		p+=valor;
 		p+="</ul>";
+		p+="<li> <strong>PUNTO Y COMA </strong></li>"
 		p+="</li>";
 
 		
@@ -94,7 +95,7 @@ const instruccionesAPI = {
 		return p;
 	},
 
-	nuevoPrint: function (tipo, valores) {
+	nuevoPrint: function (tipo, valores) {//ok expand
 		var n = "";
 		if (tipo == "print") {
 			n = TIPO_INSTRUCCION.PRINT;
@@ -110,68 +111,68 @@ const instruccionesAPI = {
 		p+=valores;
 		p+="</ul>";
 		p+="</li>";
-
-		
 		p+="</ul>";
+		p+="<li> <strong>PUNTO Y COMA </strong></li>";
 		p+="</li>";
 
 		return p;
 	},
 
-	nuevoWhile: function (exprLogica, instrucciones) {
+	nuevoWhile: function (exprLogica, instrucciones) {//OK EXP
 		var p="<li><span class='caret'> WHILE </span>";
 		p+="<ul class='nested'>";
-		
-
+		p+="<li> <strong>PARENTESIS ABRE </strong></li>";
 		p+="<li><span class='caret'>Valor-logico</span>";
 		p+="<ul class='nested'>";
 		p+=exprLogica;
 		p+="</ul>";
 		p+="</li>";
-
+		p+="<li> <strong>PARENTESIS CIERRA </strong></li>";
+		p+="<li> <strong>LLAVE ABRE </strong></li>";
 		p+="<li><span class='caret'>Instrucciones</span>";
 		p+="<ul class='nested'>";
 		p+=instrucciones;
 		p+="</ul>";
 		p+="</li>";
-		
+		p+="<li> <strong>LLAVE CIERRA </strong></li>"
 		p+="</ul>";
 		p+="</li>";
 
 		return p;
 
 	},
-	nuevoDoWhile: function (exprLogica, instrucciones) {
+	nuevoDoWhile: function (exprLogica, instrucciones) {//OK EXP
 		var p="<li><span class='caret'> DO-WHILE </span>";
 		p+="<ul class='nested'>";
-		
+		p+="<li> <strong>PARENTESIS ABRE </strong></li>";
 
 		p+="<li><span class='caret'>Valor-logico</span>";
 		p+="<ul class='nested'>";
 		p+=exprLogica;
 		p+="</ul>";
 		p+="</li>";
-
+		p+="<li> <strong>PARENTESIS ABRE </strong></li>";
+		p+="<li> <strong>LLAVE ABRE </strong></li>";
 		p+="<li><span class='caret'>Instrucciones</span>";
 		p+="<ul class='nested'>";
 		p+=instrucciones;
 		p+="</ul>";
 		p+="</li>";
-		
+		p+="<li> <strong>LLAVE CIERRA </strong></li>";
 		p+="</ul>";
 		p+="</li>";
 
 		return p;
 	},
 
-	nuevoFor: function (var_arr, expresionLogica, aumento, instrucciones) {
+	nuevoFor: function (var_arr, expresionLogica, aumento, instrucciones) {//ok exp
 
 		var a = var_arr[0];
 		var b = var_arr[1];
 
 		var p="<li><span class='caret'> FOR </span>";
 		p+="<ul class='nested'>";
-
+		p+="<li> <strong>PARENTESIS ABRE </strong></li>";
 		p+="<li>Variable: "+a+"</li>"
 
 		p+="<li><span class='caret'>Valor-variable</span>";
@@ -191,77 +192,81 @@ const instruccionesAPI = {
 		p+=aumento;
 		p+="</ul>";
 		p+="</li>";
-
+		p+="<li> <strong>PARENTESIS CIERRA</strong></li>";
+		p+="<li> <strong>LLAVE ABRE </strong></li>";
 		p+="<li><span class='caret'>Instrucciones</span>";
 		p+="<ul class='nested'>";
 		p+=instrucciones;
 		p+="</ul>";
 		p+="</li>";
-		
+		p+="<li> <strong>LLAVE CIERRA </strong></li>";
 		p+="</ul>";
 		p+="</li>";
 
 		return p;
 	},
 
-	nuevoIf: function (expresionLogica, instrucciones) {
+	nuevoIf: function (expresionLogica, instrucciones) {//ok exp
 
 		var p="<li><span class='caret'> IF </span>";
 		p+="<ul class='nested'>";
 		
-
+		p+="<li> <strong>PARENTESIS ABRE </strong></li>";
 		p+="<li><span class='caret'>Valor-logico</span>";
 		p+="<ul class='nested'>";
 		p+=expresionLogica;
 		p+="</ul>";
 		p+="</li>";
-
+		p+="<li> <strong>PARENTESIS CIERRA </strong></li>";
+		p+="<li> <strong>LLAVE ABRE </strong></li>";
 		p+="<li><span class='caret'>Instrucciones</span>";
 		p+="<ul class='nested'>";
 		p+=instrucciones;
 		p+="</ul>";
 		p+="</li>";
-		
+		p+="<li> <strong>LLAVE CIERRA </strong></li>";
 		p+="</ul>";
 		p+="</li>";
 
 		return p;
 
 	},
-	nuevoElse: function (instrucciones) {
+	nuevoElse: function (instrucciones) {//ok exp
 		var p="<li><span class='caret'> ELSE </span>";
 		p+="<ul class='nested'>";
 		
-
+		p+="<li> <strong>LLAVE ABRE </strong></li>";
 		p+="<li><span class='caret'>Instrucciones</span>";
 		p+="<ul class='nested'>";
 		p+=instrucciones;
 		p+="</ul>";
 		p+="</li>";
-		
+		p+="<li> <strong>LLAVE CIERRA </strong></li>";
 		p+="</ul>";
 		p+="</li>";
 
 		return p;
 	},
 
-	nuevoElseIf: function (expresionLogica, instrx) {
+	nuevoElseIf: function (expresionLogica, instrx) {//OK EXP
 		var p="<li><span class='caret'> ELSE-IF </span>";
 		p+="<ul class='nested'>";
 		
-
+		p+="<li> <strong>PARENTESIS ABRE </strong></li>";
 		p+="<li><span class='caret'>Valor-logico</span>";
 		p+="<ul class='nested'>";
 		p+=expresionLogica;
 		p+="</ul>";
 		p+="</li>";
+		p+="<li> <strong>PARENTESIS CIERRA </strong></li>";
 
+		p+="<li> <strong>LLAVE ABRE </strong></li>"
 		p+="<li><span class='caret'>Instrucciones</span>";
 		p+="<ul class='nested'>";
 		p+=instrx;
 		p+="</ul>";
 		p+="</li>";
-		
+		p+="<li> <strong>LLAVE CIERRA </strong></li>";
 		p+="</ul>";
 		p+="</li>";
 
@@ -273,26 +278,28 @@ const instruccionesAPI = {
 		var p="<li><span class='caret'> SWITCH </span>";
 		p+="<ul class='nested'>";
 		
-
+		p+="<li> <strong>PARENTESIS ABRE </strong></li>";
 		p+="<li><span class='caret'>Valor</span>";
 		p+="<ul class='nested'>";
 		p+=varx;
 		p+="</ul>";
 		p+="</li>";
+		p+="<li> <strong>PARENTESIS CIERRA </strong></li>";
 
+		p+="<li> <strong>LLAVE ABRE </strong></li>"
 		p+="<li><span class='caret'>Casos</span>";
 		p+="<ul class='nested'>";
 		p+=casos;
 		p+="</ul>";
 		p+="</li>";
-		
+		p+="<li> <strong>LLAVE CIERRA </strong></li>";
 		p+="</ul>";
 		p+="</li>";
 
 		return p;
 	},
 
-	nuevoCaso: function (valor, instr) {
+	nuevoCaso: function (valor, instr) {//OK EXP
 
 		var p="<li><span class='caret'> CASO </span>";
 		p+="<ul class='nested'>";
@@ -303,7 +310,7 @@ const instruccionesAPI = {
 		p+=valor;
 		p+="</ul>";
 		p+="</li>";
-
+		p+="<li> <strong>DOS PUNTOS </strong></li>";
 		p+="<li><span class='caret'>Instrucciones</span>";
 		p+="<ul class='nested'>";
 		p+=instr;
@@ -316,11 +323,10 @@ const instruccionesAPI = {
 		return p;
 
 	},
-	nuevoDefault: function (instr) {
+	nuevoDefault: function (instr) {//OK EXPAND
 		var p="<li><span class='caret'> DEFAULT </span>";
 		p+="<ul class='nested'>";
-		
-
+		p+="<li> <strong>DOS PUNTOS </strong></li>";
 		p+="<li><span class='caret'>Instrucciones</span>";
 		p+="<ul class='nested'>";
 		p+=instr;
@@ -339,19 +345,21 @@ const instruccionesAPI = {
 		p+="<ul class='nested'>";
 
 		p+="<li>Nombre: "+nombre+"</li>"
-
+		p+="<li> <strong>PARENTESIS ABRE </strong></li>";
 		p+="<li><span class='caret'>Parametros</span>";
 		p+="<ul class='nested'>";
 		p+=params; //lista ver
 		p+="</ul>";
 		p+="</li>";
+		p+="<li> <strong>PARENTESIS CIERRA </strong></li>";
 
+		p+="<li> <strong>LLAVE ABRE </strong></li>";
 		p+="<li><span class='caret'>Instrucciones</span>";
 		p+="<ul class='nested'>";
 		p+=instrx;
 		p+="</ul>";
 		p+="</li>";
-		
+		p+="<li> <strong>LLAVE CIERRA </strong></li>";
 		p+="</ul>";
 		p+="</li>";
 
@@ -364,19 +372,21 @@ const instruccionesAPI = {
 
 		p+="<li>Nombre: "+nombre+"</li>"
 		p+="<li>Tipo: "+tipo+"</li>"
-
+		p+="<li> <strong>PARENTESIS ABRE </strong></li>";
 		p+="<li><span class='caret'>Parametros</span>";
 		p+="<ul class='nested'>";
 		p+=params; //lista ver
 		p+="</ul>";
 		p+="</li>";
+		p+="<li> <strong>PARENTESIS CIERRA </strong></li>"
 
+		p+="<li> <strong>LLAVE ABRE </strong></li>";
 		p+="<li><span class='caret'>Instrucciones</span>";
 		p+="<ul class='nested'>";
 		p+=instrx;
 		p+="</ul>";
 		p+="</li>";
-		
+		p+="<li> <strong>LLAVE CIERRA </strong></li>";
 		p+="</ul>";
 		p+="</li>";
 
@@ -388,13 +398,14 @@ const instruccionesAPI = {
 		p+="<ul class='nested'>";
 
 		p+="<li>Nombre: "+nombre+"</li>"
-
+		p+="<li> <strong>PARENTESIS ABRE </strong></li>";
 		p+="<li><span class='caret'>Parametros</span>";
 		p+="<ul class='nested'>";
 		p+=params; //VER QUE PASA
 		p+="</ul>";
 		p+="</li>";
-		
+		p+="<li> <strong>PARENTESIS CIERRA </strong></li>";
+		p+="<li> <strong>PUNTO Y COMA </strong></li>";
 		p+="</ul>";
 		p+="</li>";
 
@@ -406,7 +417,7 @@ const instruccionesAPI = {
 		p+="<ul class='nested'>";
 
 		p+="<li>Nombre: "+nombre+"</li>"
-
+		p+="<li> <strong>=</strong></li>";
 		p+="<li><span class='caret'>Valores</span>";
 		p+="<ul class='nested'>";
 		p+=valores;

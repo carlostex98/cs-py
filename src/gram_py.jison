@@ -16,6 +16,10 @@
         return "\'\'\' " +texto.substr(2,texto.length-3)+"\'\'\' \n";
     }
 
+    function vpt(){
+        vmx=0;
+    }
+
 %}
 
 
@@ -81,13 +85,14 @@
 [0-9]+"."[0-9]+  	{return 'DECIMAL';}
 [0-9]+				{return 'ENTERO';}
 ([a-zA-Z])[a-zA-Z0-9_]*	{return 'IDENTIFICADOR';}
-<<EOF>>				    {return 'EOF'; vmx=0;}
+<<EOF>>				    {return 'EOF'; }
 .					    { }
 
 /lex
 %{
 	
 	const instruccionesPY	= require('../src/gram_instr/py.js').instruccionesPY;
+    module.exports.vpt=vpt;
 %}
 
 
@@ -96,7 +101,7 @@
 %% /* gramar def */
 
 ini
-	: instr_methods EOF {return $1+s_main();}
+	: instr_methods EOF {return $1+s_main(); }
 ;
 
 
@@ -112,7 +117,7 @@ instr_meth
     | CLASS IDENTIFICADOR LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoClass($2,$4);}
     | VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoMetodo($2,$4,$7); }
     | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoFuncion($2,$4,$1,$7); }
-    | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoMetodo($2," ",$6); vmx=1;}
+    | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C { vmx=1; $$=instruccionesPY.nuevoMetodo($2," ",$6);}
     | IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoIf($3,$6);}
     | ELSE IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoElseIf($4,$7);}
     | ELSE LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoElse($3);}
@@ -121,7 +126,7 @@ instr_meth
     | CONSOLE PUNTO WRITE PAR_A asignacion PAR_C PUNTO_C  {$$=instruccionesPY.nuevoPrint("ln",$5);}
     | FOR PAR_A var_for PUNTO_C asignacion PUNTO_C asignacion_icr PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoFor($3,$5,$7,$10);}
     | typo_var lista_v IGUAL asignacion PUNTO_C {$$=instruccionesPY.nuevoVal($1,$2,$4); }
-    | typo_var lista_v PUNTO_C {$$=instruccionesPY.nuevoVal($1,$2,"");  }
+    | typo_var lista_v PUNTO_C {$$=instruccionesPY.nuevoVal($1,$2,"none");  }
     | BREAK PUNTO_C {$$=instruccionesPY.nuevoBreak();}
     | RETURN asignacion_ret PUNTO_C {$$=instruccionesPY.nuevoReturn($2);}
     | IDENTIFICADOR sms PUNTO_C {$$=instruccionesPY.nuevaUnar($2,$1);}

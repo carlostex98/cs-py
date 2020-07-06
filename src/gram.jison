@@ -49,6 +49,28 @@
         return texto;
     }
 
+    var a_c = 0;
+    var b_c = 0;
+    var c_c = 0;
+
+    function r_control(){
+        a_c = 0;
+        b_c = 0;
+        c_c = 0;
+    }
+
+    function context_return(ln, cl){
+        
+    }
+
+    function context_continue(ln, cl){
+        
+    }
+
+    function context_break(ln, cl){
+        
+    }
+
 %}
 
 
@@ -123,6 +145,7 @@
 	const TIPO_VAL		= require('../src/gram_instr/instr').TIPO_VAL;
 	const instruccionesAPI	= require('../src/gram_instr/instr').instruccionesAPI;
     module.exports.clear_vars=clear_vars;
+    module.exports.r_control=r_control;
 %}
 
 
@@ -137,30 +160,30 @@ ini
 
 instr_methods
     :instr_methods instr_meth   {$1.push($2); $$ = $1; }
-    |instr_meth                 {$$ = [$1];}
+    |instr_meth                 {$$ = [$1]; }
 ;
 instr_meth
     : /* empty */  {}
     | CLASS IDENTIFICADOR LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoClass($2,$4);}
     | VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,$4,$7); in_var("Void", $2, this._$.first_line);}
-    | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoFuncion($2,$4,$1,$7); in_var("Funcion", $2, this._$.first_line);}
+    | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C { a_c=1; $$=instruccionesAPI.nuevoFuncion($2,$4,$1,$7); in_var("Funcion", $2, this._$.first_line); }
     | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,"vacio",$6); in_var("main", "main", this._$.first_line);}
     | IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoIf($3,$6);}
     | ELSE IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoElseIf($4,$7);}
     | ELSE LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoElse($3);}
-    | WHILE PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoWhile($3,$6);}
-    | DO LLAVE_A instr_methods LLAVE_C WHILE PAR_A asignacion PAR_C PUNTO_C {$$=instruccionesAPI.nuevoDoWhile($7,$3);}
+    | WHILE PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C { b_c=1; c_c=1; $$=instruccionesAPI.nuevoWhile($3,$6); }
+    | DO LLAVE_A instr_methods LLAVE_C WHILE PAR_A asignacion PAR_C PUNTO_C { b_c=1; c_c=1; $$=instruccionesAPI.nuevoDoWhile($7,$3);  }
     | CONSOLE PUNTO WRITE PAR_A asignacion PAR_C PUNTO_C  {$$=instruccionesAPI.nuevoPrint("ln",$5);}
-    | FOR PAR_A var_for PUNTO_C asignacion PUNTO_C asignacion_icr PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoFor($3,$5,$7,$10);}
+    | FOR PAR_A var_for PUNTO_C asignacion PUNTO_C asignacion_icr PAR_C LLAVE_A instr_methods LLAVE_C { b_c=1; c_c=1; $$=instruccionesAPI.nuevoFor($3,$5,$7,$10); }
     | typo_var lista_v IGUAL asignacion PUNTO_C {$$=instruccionesAPI.nuevoVal($1,$2,$4); }
     | typo_var lista_v PUNTO_C {$$=instruccionesAPI.nuevoVal($1,$2,"");  }
-    | BREAK PUNTO_C {$$=instruccionesAPI.nuevoBreak();}
-    | RETURN asignacion_ret PUNTO_C {$$=instruccionesAPI.nuevoReturn($2);}
+    | BREAK PUNTO_C {$$=instruccionesAPI.nuevoBreak(); context_break($1.first_line, $2.first_column);}
+    | RETURN asignacion_ret PUNTO_C {$$=instruccionesAPI.nuevoReturn($2); context_continue($1.first_line, $2.first_column);}
     | IDENTIFICADOR sms PUNTO_C {$$=instruccionesAPI.nuevaUnar($2,$1);}
     | IDENTIFICADOR PAR_A params2 PAR_C PUNTO_C  {$$=instruccionesAPI.nuevollamada($1,$3);}
     | IDENTIFICADOR IGUAL asignacion PUNTO_C    {$$=instruccionesAPI.nuevoAsig($1,$3);}
-    | SWITCH PAR_A asignacion PAR_C LLAVE_A sw_op LLAVE_C {$$=instruccionesAPI.nuevoSwitch($3,$6);}
-    | CONTINUE PUNTO_C {$$=instruccionesAPI.nuevoContinue();}
+    | SWITCH PAR_A asignacion PAR_C LLAVE_A sw_op LLAVE_C { c_c=1;$$=instruccionesAPI.nuevoSwitch($3,$6);  }
+    | CONTINUE PUNTO_C {$$=instruccionesAPI.nuevoContinue();  context_continue($1.first_line, $2.first_column);}
     | COMENTARIO {$$=instruccionesAPI.nuevoComentario($1);}  
     | error panicMode{  in_err("Sintactico",this._$.first_line,this._$.first_column,yytext); }
 ;
