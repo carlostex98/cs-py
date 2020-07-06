@@ -28,7 +28,7 @@ route.post('/', function (req, res) {
     for (let i = 0; i < ast.length; i++) {
         ast = ast.replace(">,<", "><");
     }
-    var mx = html2json(n[3]);
+    var mx = "s";
     //console.log();
     let r = [];
     r = req.body.file_x.split("\n");

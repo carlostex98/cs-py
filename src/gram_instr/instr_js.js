@@ -256,6 +256,13 @@ const instruccionesAPI = {
                 "valor": valor
             }
         }
+    },
+    nuevoComentario:function(texto){
+        return{
+            "comentario":{
+                "texto":texto
+            } 
+        }
     }
 
 }

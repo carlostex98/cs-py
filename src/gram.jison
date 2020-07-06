@@ -55,8 +55,8 @@
 
 %%
 \s+                      {}                       
-[/][/].*                  {in_comment(yytext, yylloc.first_line, yylloc.first_column);}                      
-[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]	       { in_comment(yytext, yylloc.first_line, yylloc.first_column); }
+[/][/].*                  { in_comment(yytext, yylloc.first_line, yylloc.first_column); return 'COMENTARIO';}                      
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]	       { in_comment(yytext, yylloc.first_line, yylloc.first_column); return 'COMENTARIO';}
 "string"                {return 'STRING';}
 "char"                  {return 'CHAR';}
 "int"                    {return 'INT';}
@@ -136,10 +136,10 @@ instr_methods
     |instr_meth                 {$$ = [$1];}
 ;
 instr_meth
-    : VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,$4,$7); in_var("Void", $2, this._$.first_line);}
+    : /* empty */  {}
+    | VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,$4,$7); in_var("Void", $2, this._$.first_line);}
     | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoFuncion($2,$4,$1,$7); in_var("Funcion", $2, this._$.first_line);}
     | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoMetodo($2,"vacio",$6); in_var("main", "main", this._$.first_line);}
-
     | IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoIf($3,$6);}
     | ELSE IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoElseIf($4,$7);}
     | ELSE LLAVE_A instr_methods LLAVE_C {$$=instruccionesAPI.nuevoElse($3);}
@@ -155,12 +155,16 @@ instr_meth
     | IDENTIFICADOR PAR_A params2 PAR_C PUNTO_C  {$$=instruccionesAPI.nuevollamada($1,$3);}
     | IDENTIFICADOR IGUAL asignacion PUNTO_C    {$$=instruccionesAPI.nuevoAsig($1,$3);}
     | SWITCH PAR_A asignacion PAR_C LLAVE_A sw_op LLAVE_C {$$=instruccionesAPI.nuevoSwitch($3,$6);}
-
     | CONTINUE PUNTO_C {$$=instruccionesAPI.nuevoContinue();}
-    
-    | error PUNTO_C{  in_err("Sintactico",this._$.first_line,this._$.first_column,yytext); }
+    | COMENTARIO {$$=instruccionesAPI.nuevoComentario($1);}  
+    | error panicMode{  in_err("Sintactico",this._$.first_line,this._$.first_column,yytext); }
 ;
 
+panicMode
+    : PUNTO_C {  $$=$1; }
+    | LLAVE_C {  $$=$1;}
+    | EOF {  $$=$1; }
+;
 
 asignacion_ret
     :/*empty*/ {}
@@ -190,6 +194,7 @@ sw_op
 casos
     : CASE asignacion DOS_P instr_methods {$$=instruccionesAPI.nuevoCaso($2,$4);}
     | DEFAULT DOS_P instr_methods {$$=instruccionesAPI.nuevoDefault($3);}
+    | COMENTARIO {$$=instruccionesAPI.nuevoComentario($1);}  
 ;
 var_for
     : typo_var IDENTIFICADOR IGUAL asignacion {$$=[$2,$4];}

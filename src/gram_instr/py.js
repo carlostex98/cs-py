@@ -78,6 +78,11 @@ const instruccionesPY = {
 	},
 	nuevollamada: function (nombre, params) {
 		
+		return nombre+"("+params+")";
+
+	},
+	nuevollamada2: function (nombre, params) {
+		
 		return nombre+"("+params+")\n";
 
 	},

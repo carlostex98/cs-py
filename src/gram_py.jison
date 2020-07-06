@@ -6,6 +6,14 @@
            return instruccionesPY.nuevoMain();
        }
    }
+
+    function com1(texto){
+        return "#"+texto.substr(2)+"\n";
+    }
+    function com2(texto){
+        return "\'\'\' " +texto.substr(2,texto.length-3)+"\'\'\' \n";
+    }
+
 %}
 
 
@@ -15,8 +23,8 @@
 
 %%
 \s+                      {}                       
-"//".*	                  {}                      
-[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]	       { }
+[/][/].* 	                  {return 'COMENTARIO_1';}                      
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]	       {return 'COMENTARIO_2'; }
 "string"                {return 'STRING';}
 "char"                  {return 'CHAR';}
 "int"                    {return 'INT';}
@@ -97,10 +105,10 @@ instr_methods
 
 
 instr_meth
-    : VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoMetodo($2,$4,$7); }
+    : /* empty */  {}
+    | VOID IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoMetodo($2,$4,$7); }
     | typo_var IDENTIFICADOR PAR_A params PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoFuncion($2,$4,$1,$7); }
     | VOID MAIN PAR_A PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoMetodo($2," ",$6); vmx=1;}
-
     | IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoIf($3,$6);}
     | ELSE IF PAR_A asignacion PAR_C LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoElseIf($4,$7);}
     | ELSE LLAVE_A instr_methods LLAVE_C {$$=instruccionesPY.nuevoElse($3);}
@@ -113,13 +121,21 @@ instr_meth
     | BREAK PUNTO_C {$$=instruccionesPY.nuevoBreak();}
     | RETURN asignacion_ret PUNTO_C {$$=instruccionesPY.nuevoReturn($2);}
     | IDENTIFICADOR sms PUNTO_C {$$=instruccionesPY.nuevaUnar($2,$1);}
-    | IDENTIFICADOR PAR_A params2 PAR_C PUNTO_C  {$$=instruccionesPY.nuevollamada($1,$3);}
+    | IDENTIFICADOR PAR_A params2 PAR_C PUNTO_C  {$$=instruccionesPY.nuevollamada2($1,$3);}
     | IDENTIFICADOR IGUAL asignacion PUNTO_C    {$$=instruccionesPY.nuevoAsig($1,$3);}
     | SWITCH PAR_A asignacion PAR_C LLAVE_A sw_op LLAVE_C {$$=instruccionesPY.nuevoSwitch($3,$6);}
     | CONTINUE PUNTO_C {$$=instruccionesPY.nuevoContinue();}
-    | error PUNTO_C{  }
+    | COMENTARIO_1 {$$=com1($1);}
+    | COMENTARIO_2 {$$=com2($1);}
+    | error panicMode{ $$="#err" }
 ;
 
+
+panicMode
+    : PUNTO_C {  $$=$1; }
+    | LLAVE_C {  $$=$1;}
+    | EOF {  $$=$1; }
+;
 
 asignacion_ret
     :/*empty*/ {}
@@ -149,6 +165,8 @@ sw_op
 casos
     : CASE asignacion DOS_P instr_methods {$$=instruccionesPY.nuevoCaso($2,$4);}
     | DEFAULT DOS_P instr_methods {$$=instruccionesPY.nuevoDefault($3);}
+    | COMENTARIO_1 {$$=com1($1);}
+    | COMENTARIO_2 {$$=com2($1);}
 ;
 var_for
     : typo_var IDENTIFICADOR IGUAL asignacion {$$=[$2,$4];}

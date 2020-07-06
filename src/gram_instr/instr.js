@@ -520,6 +520,15 @@ const instruccionesAPI = {
 		p+="</li>";
 
 		return p;
+	},
+	nuevoComentario: function(texto){
+		var p="<li><span class='caret'> COMENTARIO </span>";
+		p+="<ul class='nested'>";
+		p+="<li>"+texto+"</li>"
+		p+="</ul>";
+		p+="</li>";
+
+		return p;
 	}
 
 }
