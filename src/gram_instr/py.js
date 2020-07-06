@@ -18,7 +18,7 @@ function indent(texto) {
 const instruccionesPY = {
 
 	nuevoVal: function (tipo, nombre, valor) {
-		return nombre + " = " + valor + "\n";
+		return "var "+nombre + " = " + valor + "\n";
 	},
 
 	nuevoPrint: function (tipo, valores) {

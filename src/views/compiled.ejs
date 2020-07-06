@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
-  <title>Hello, world!</title>
+  <title>Compiladores</title>
   <style>
     /* Remove default bullets */
     ul,
@@ -55,7 +55,7 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Compiladores</a>
+    <a class="navbar-brand" href="/">Compiladores</a>
   </nav>
 
   <div class="container">
@@ -98,6 +98,7 @@
 
       </div>
       <div class="tab-pane fade" id="err" role="tabpanel" aria-labelledby="err-tab">
+        <br><br>
         <table class="table">
           <thead>
             <tr>
@@ -126,6 +127,8 @@
       </table>
       </div>
       <div class="tab-pane fade" id="var" role="tabpanel" aria-labelledby="var-tab">
+        <br>
+        <br>
         <table class="table">
           <thead>
             <tr>
@@ -150,14 +153,19 @@
       </table>
       </div>
       <div class="tab-pane fade" id="ast" role="tabpanel" aria-labelledby="ast-tab">
+        <br>
         <%- ast%>
 
+        <br>
+        <br>
         <textarea class="form-control" readonly rows="25" id="py_x" > <%= ast_json%> </textarea>
+        <br>
+        <a href="/json_comp" >Ver solo el JSON</a>
 
       </div>
       <div class="tab-pane fade" id="py" role="tabpanel" aria-labelledby="py-tab">
         <div class="form-group">
-          
+          <br>
           <textarea class="form-control" readonly rows="25" id="py_x" > <%= python%> </textarea>
           <br>
           <button onclick="saveTextAsFile(py_x.value,'download_python.py')" class="btn btn-primary">Guardar en el PC</button>

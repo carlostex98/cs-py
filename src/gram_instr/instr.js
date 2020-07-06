@@ -423,7 +423,7 @@ const instruccionesAPI = {
 		p+=valores;
 		p+="</ul>";
 		p+="</li>";
-		
+		p+="<li> <strong>PUNTO Y COMA </strong></li>";
 		p+="</ul>";
 		p+="</li>";
 
@@ -432,12 +432,14 @@ const instruccionesAPI = {
 	nuevoBreak: function () {
 		//no recibe parametros
 		var n = "<li> BREAK </li>"
+		n+="<li> <strong>PUNTO Y COMA </strong></li>";
 		return n;
 		
 	},
 	nuevoContinue: function () {
 		//no recibe parametros
 		var n = "<li> CONTINUE </li>"
+		n+="<li> <strong>PUNTO Y COMA </strong></li>";
 		return n;
 	},
 	nuevoReturn: function (valores) {
@@ -449,7 +451,7 @@ const instruccionesAPI = {
 		p+=valores;
 		p+="</ul>";
 		p+="</li>";
-		
+		p+="<li> <strong>PUNTO Y COMA </strong></li>";
 		p+="</ul>";
 		p+="</li>";
 
@@ -468,13 +470,13 @@ const instruccionesAPI = {
 
 		var p="<li><span class='caret'> AGRUPACION </span>";
 		p+="<ul class='nested'>";
-
+		p+="<li> <strong>PARENTESIS ABRE </strong></li>";
 		p+="<li><span class='caret'>Valores</span>";
 		p+="<ul class='nested'>";
 		p+=val;
 		p+="</ul>";
 		p+="</li>";
-		
+		p+="<li> <strong>PARENTESIS CIERRA </strong></li>";
 		p+="</ul>";
 		p+="</li>";
 		return p;
@@ -484,14 +486,14 @@ const instruccionesAPI = {
 		var p="<li><span class='caret'> OPERACION </span>";
 		p+="<ul class='nested'>";
 		p+="<li>"+tipo+"</li>"
-		p+="<li><span class='caret'>Valore-izq</span>";
+		p+="<li><span class='caret'>Valor-izq</span>";
 		p+="<ul class='nested'>";
 		p+=Izq;
 		p+="</ul>";
 		p+="</li>";
 
 
-		p+="<li><span class='caret'>Valore-der</span>";
+		p+="<li><span class='caret'>Valor-der</span>";
 		p+="<ul class='nested'>";
 		p+=Der;
 		p+="</ul>";
