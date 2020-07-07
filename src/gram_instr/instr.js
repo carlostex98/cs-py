@@ -431,15 +431,13 @@ const instruccionesAPI = {
 	},
 	nuevoBreak: function () {
 		//no recibe parametros
-		var n = "<li> BREAK </li>"
-		n+="<li> <strong>PUNTO Y COMA </strong></li>";
+		var n = "<li> BREAK <strong> PUNTO Y COMA </strong></li>";
 		return n;
 		
 	},
 	nuevoContinue: function () {
 		//no recibe parametros
-		var n = "<li> CONTINUE </li>"
-		n+="<li> <strong>PUNTO Y COMA </strong></li>";
+		var n = "<li> CONTINUE <strong> PUNTO Y COMA </strong></li>";
 		return n;
 	},
 	nuevoReturn: function (valores) {
