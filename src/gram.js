@@ -126,16 +126,16 @@ case 15:
  b_c=1; c_c=1; this.$=instruccionesAPI.nuevoFor($$[$0-8],$$[$0-6],$$[$0-4],$$[$0-1]); 
 break;
 case 16:
-this.$=instruccionesAPI.nuevoVal($$[$0-4],$$[$0-3],$$[$0-1]); 
+this.$=instruccionesAPI.nuevoVal($$[$0-4],$$[$0-3],$$[$0-1]); var_lst_x($$[$0-4],$$[$0-3], this._$.first_line);
 break;
 case 17:
-this.$=instruccionesAPI.nuevoVal($$[$0-2],$$[$0-1],"");  
+this.$=instruccionesAPI.nuevoVal($$[$0-2],$$[$0-1],"");  var_lst_x($$[$0-2],$$[$0-1], this._$.first_line);
 break;
 case 18:
-this.$=instruccionesAPI.nuevoBreak(); context_break($$[$0-1].first_line, $$[$0].first_column);
+this.$=instruccionesAPI.nuevoBreak(); 
 break;
 case 19:
-this.$=instruccionesAPI.nuevoReturn($$[$0-1]); context_continue($$[$0-2].first_line, $$[$0-1].first_column);
+this.$=instruccionesAPI.nuevoReturn($$[$0-1]); 
 break;
 case 20:
 this.$=instruccionesAPI.nuevaUnar($$[$0-1],$$[$0-2]);
@@ -150,7 +150,7 @@ case 23:
  c_c=1;this.$=instruccionesAPI.nuevoSwitch($$[$0-4],$$[$0-1]);  
 break;
 case 24:
-this.$=instruccionesAPI.nuevoContinue();  context_continue($$[$0-1].first_line, $$[$0].first_column);
+this.$=instruccionesAPI.nuevoContinue();  
 break;
 case 25: case 41:
 this.$=instruccionesAPI.nuevoComentario($$[$0]);
@@ -177,10 +177,10 @@ case 34:
 this.$=TIPO_OPERACION.DECREMENTO;
 break;
 case 35:
-$$[$0-2].push($$[$0]); in_var("Variable", $$[$0], this._$.first_line); 
+$$[$0-2].push($$[$0]); 
 break;
 case 36:
-this.$=[$$[$0]]; in_var("Variable", $$[$0], this._$.first_line);
+this.$=[$$[$0]]; 
 break;
 case 37:
 $$[$0-1].push($$[$0]); this.$=$$[$0-1];
@@ -591,27 +591,23 @@ _handle_error:
     }
 
     function context_return(ln, cl){
-        if(a_c!=1){
-            //error
-            in_err("Semantico", ln, cl, "return fuera de contexto");
-            a_c=0;
-        }
+        
     }
 
     function context_continue(ln, cl){
-        if(b_c!=1){
-            //error
-            in_err("Semantico", ln, cl, "continue fuera de contexto");
-            b_c=0;
-        }
+        
     }
 
     function context_break(ln, cl){
-        if(c_c!=1){
-            //error
-            in_err("Semantico", ln, cl, "break fuera de contexto");
-            c_c=0;
+        
+    }
+
+    function var_lst_x(tipo_var, vars, ln){
+
+        for(let i=0; i<vars.length; i++){
+            in_var(tipo_var, vars[i], ln);
         }
+
     }
 
 
@@ -1064,7 +1060,7 @@ case 56:return 8;
 break;
 case 57:return 5;
 break;
-case 58: in_err("Lexico", yy_.yylloc.first_line,yy_.yylloc.first_column, "El caracter("+yy_.yytext+")no pertenece al lenguaje"); 
+case 58: in_err("Lexico", yy_.yylloc.first_line,yy_.yylloc.first_column, "El caracter (  "+  yy_.yytext  +"  )  no pertenece al lenguaje"); 
 break;
 }
 },

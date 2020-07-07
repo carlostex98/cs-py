@@ -9,7 +9,7 @@ var parser = require('../gram');
 var py_phar = require('../gram_py');
 var jsx = require('../gram_json');
 
-var pt="";
+var pt = "";
 
 route.get('/', function (req, res) {
     res.render('index.ejs');
@@ -33,26 +33,36 @@ route.post('/', function (req, res) {
     try {
         mx = html2json(n[3]);
     } catch (error) {
-        mx="el html contiene errores"
+        mx = "el html contiene errores"
     }
     //console.log();
     let r = [];
     r = req.body.file_x.split("\n");
     let err = n[1];
     for (let i = 0; i < err.length; i++) {
-        err[i][4] = r[err[i][2] - 1];
+        if (err[i][1] == "Sintactico") {
+            err[i][4] = r[err[i][2] - 1];
+        }
+
     }
 
+    var part = JSON.stringify(mx, null, "\t");
+
+
     py_phar.vpt();
-    pt=jsx.parse(req.body.file_x);
+
+
+    pt = jsx.parse(req.body.file_x);
+
+    
     result = {
         errores: err,
         vars: n[2],
         ast: ast,
         python: py_phar.parse(req.body.file_x),
-        json_x: JSON.stringify(mx, null, "\t"),
+        json_x: part,
         html_x: n[3],
-        ast_json : JSON.stringify(jsx.parse(req.body.file_x), null, "\t")
+        ast_json: JSON.stringify(jsx.parse(req.body.file_x), null, "\t")
     };
     res.redirect('/cmp');
 });
@@ -62,7 +72,7 @@ route.get('/cmp', function (req, res) {
 });
 
 route.get('/json_comp', function (req, res) {
-    res.send(pt);
+    res.send(pt);//mandamos el json
 });
 
 

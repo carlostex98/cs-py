@@ -71,6 +71,14 @@
         
     }
 
+    function var_lst_x(tipo_var, vars, ln){
+
+        for(let i=0; i<vars.length; i++){
+            in_var(tipo_var, vars[i], ln);
+        }
+
+    }
+
 %}
 
 
@@ -137,7 +145,7 @@
 [0-9]+				{return 'ENTERO';}
 ([a-zA-Z])[a-zA-Z0-9_]*	{return 'IDENTIFICADOR';}
 <<EOF>>				    {return 'EOF';}
-.					    { in_err("Lexico", yylloc.first_line,yylloc.first_column, "El caracter("+yytext+")no pertenece al lenguaje"); }
+.					    { in_err("Lexico", yylloc.first_line,yylloc.first_column, "El caracter (  "+  yytext  +"  )  no pertenece al lenguaje"); }
 
 /lex
 %{
@@ -175,15 +183,15 @@ instr_meth
     | DO LLAVE_A instr_methods LLAVE_C WHILE PAR_A asignacion PAR_C PUNTO_C { b_c=1; c_c=1; $$=instruccionesAPI.nuevoDoWhile($7,$3);  }
     | CONSOLE PUNTO WRITE PAR_A asignacion PAR_C PUNTO_C  {$$=instruccionesAPI.nuevoPrint("ln",$5);}
     | FOR PAR_A var_for PUNTO_C asignacion PUNTO_C asignacion_icr PAR_C LLAVE_A instr_methods LLAVE_C { b_c=1; c_c=1; $$=instruccionesAPI.nuevoFor($3,$5,$7,$10); }
-    | typo_var lista_v IGUAL asignacion PUNTO_C {$$=instruccionesAPI.nuevoVal($1,$2,$4); }
-    | typo_var lista_v PUNTO_C {$$=instruccionesAPI.nuevoVal($1,$2,"");  }
-    | BREAK PUNTO_C {$$=instruccionesAPI.nuevoBreak(); context_break($1.first_line, $2.first_column);}
-    | RETURN asignacion_ret PUNTO_C {$$=instruccionesAPI.nuevoReturn($2); context_continue($1.first_line, $2.first_column);}
+    | typo_var lista_v IGUAL asignacion PUNTO_C {$$=instruccionesAPI.nuevoVal($1,$2,$4); var_lst_x($1,$2, this._$.first_line);}
+    | typo_var lista_v PUNTO_C {$$=instruccionesAPI.nuevoVal($1,$2,"");  var_lst_x($1,$2, this._$.first_line);}
+    | BREAK PUNTO_C {$$=instruccionesAPI.nuevoBreak(); }
+    | RETURN asignacion_ret PUNTO_C {$$=instruccionesAPI.nuevoReturn($2); }
     | IDENTIFICADOR sms PUNTO_C {$$=instruccionesAPI.nuevaUnar($2,$1);}
     | IDENTIFICADOR PAR_A params2 PAR_C PUNTO_C  {$$=instruccionesAPI.nuevollamada($1,$3);}
     | IDENTIFICADOR IGUAL asignacion PUNTO_C    {$$=instruccionesAPI.nuevoAsig($1,$3);}
     | SWITCH PAR_A asignacion PAR_C LLAVE_A sw_op LLAVE_C { c_c=1;$$=instruccionesAPI.nuevoSwitch($3,$6);  }
-    | CONTINUE PUNTO_C {$$=instruccionesAPI.nuevoContinue();  context_continue($1.first_line, $2.first_column);}
+    | CONTINUE PUNTO_C {$$=instruccionesAPI.nuevoContinue();  }
     | COMENTARIO {$$=instruccionesAPI.nuevoComentario($1);}  
     | error panicMode{  in_err("Sintactico",this._$.first_line,this._$.first_column,yytext); }
 ;
@@ -210,8 +218,8 @@ sms
 ;
 
 lista_v
-    :lista_v COMA IDENTIFICADOR {$1.push($3); in_var("Variable", $3, this._$.first_line); }
-    | IDENTIFICADOR {$$=[$1]; in_var("Variable", $1, this._$.first_line);}
+    :lista_v COMA IDENTIFICADOR {$1.push($3); }
+    | IDENTIFICADOR {$$=[$1]; }
 ;
 
 sw_op

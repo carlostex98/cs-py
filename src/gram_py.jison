@@ -136,7 +136,7 @@ instr_meth
     | CONTINUE PUNTO_C {$$=instruccionesPY.nuevoContinue();}
     | COMENTARIO_1 {$$=com1($1);}
     | COMENTARIO_2 {$$=com2($1);}
-    | error panicMode{ $$="#err" }
+    | error panicMode{ $$="#err"; }
 ;
 
 

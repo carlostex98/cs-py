@@ -159,7 +159,7 @@ case 26: case 43:
 this.$=com2($$[$0]);
 break;
 case 27:
- this.$="#err" 
+ this.$="#err"; 
 break;
 case 28: case 30:
   this.$=$$[$0]; 
