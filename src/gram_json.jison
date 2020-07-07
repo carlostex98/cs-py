@@ -160,7 +160,8 @@ sw_op
 casos
     : CASE asignacion DOS_P instr_methods {$$=instruccionesAPI.nuevoCaso($2,$4);}
     | DEFAULT DOS_P instr_methods {$$=instruccionesAPI.nuevoDefault($3);}
-    | COMENTARIO {$$=instruccionesAPI.nuevoComentario($1);}  
+    | COMENTARIO {$$=instruccionesAPI.nuevoComentario($1);}
+    | error panicMode{$$="error";   }  
 ;
 var_for
     : typo_var IDENTIFICADOR IGUAL asignacion {$$=[$2,$4];}

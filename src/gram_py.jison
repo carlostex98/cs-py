@@ -176,6 +176,7 @@ casos
     | DEFAULT DOS_P instr_methods {$$=instruccionesPY.nuevoDefault($3);}
     | COMENTARIO_1 {$$=com1($1);}
     | COMENTARIO_2 {$$=com2($1);}
+    | error panicMode{ $$="#err"; }
 ;
 var_for
     : typo_var IDENTIFICADOR IGUAL asignacion {$$=[$2,$4];}

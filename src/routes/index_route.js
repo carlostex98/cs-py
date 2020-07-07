@@ -2,6 +2,8 @@ const express = require('express');
 const route = express.Router();
 var bodyParser = require('body-parser');
 var html2json = require('html2json').html2json;
+var archivos = [];
+archivos.push(["Default","//tu codigo aqui"]);
 
 var result = { errores: null, copia: null, ast: null, python: null, json_x: null, html_x: null, ast_json: null };
 
@@ -16,19 +18,28 @@ route.get('/', function (req, res) {
 });
 
 route.post('/', function (req, res) {
+    var input_text = req.body.file_x;
     parser.clear_vars();
-    parser.r_control();
-    var n = parser.parse(req.body.file_x);
+
+    var n = "";
+    try {
+        n = parser.parse(input_text);
+    } catch (error) {
+        input_text = input_text + ";";
+        parser.clear_vars();
+        n = parser.parse(input_text);
+    }
+
+
+
     var ast = "";
-
-
     for (let i = 0; i < n[0].length; i++) {
         ast += n[0][i];
     }
-
     for (let i = 0; i < ast.length; i++) {
         ast = ast.replace(">,<", "><");
     }
+
     var mx = "";
     try {
         mx = html2json(n[3]);
@@ -50,19 +61,17 @@ route.post('/', function (req, res) {
 
 
     py_phar.vpt();
+    pt = jsx.parse(input_text);
 
 
-    pt = jsx.parse(req.body.file_x);
-
-    
     result = {
         errores: err,
         vars: n[2],
         ast: ast,
-        python: py_phar.parse(req.body.file_x),
+        python: py_phar.parse(input_text),
         json_x: part,
         html_x: n[3],
-        ast_json: JSON.stringify(jsx.parse(req.body.file_x), null, "\t")
+        ast_json: JSON.stringify(pt, null, "\t")
     };
     res.redirect('/cmp');
 });
@@ -74,6 +83,8 @@ route.get('/cmp', function (req, res) {
 route.get('/json_comp', function (req, res) {
     res.send(pt);//mandamos el json
 });
+
+
 
 
 
